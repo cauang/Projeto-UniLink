@@ -19,27 +19,15 @@ export default function Home() {
                 Cadastre-se no Unilink e ajude colegas de diferentes áreas enquanto ganha experiência valiosa.
                 Faça a diferença agora mesmo!
               </p>
+              
               <div className="mt-6">
                 <Link to="/login" className="btn-white">PARTICIPAR</Link>
               </div>
-            </div>
-          
-            {/* Imagem à direita com círculos */}
-            <div className="relative">
-              <img
-                src="/hero.png"
-                alt="Mãos conectando linhas coloridas"
-                className="w-full max-w-[515px] rounded-md mx-auto"
-              />
-              {/* círculo decorativo à direita */}
-              <div className="hidden md:block absolute -right-8 top-10 h-40 w-40 rounded-full border-2 border-white/10" />
-            </div>
-            
-            <section className="relative">
+              <section className="absolute -bottom-28.5 left-20 w-full">
               <div className="container-page">
                 <div className="relative">
                   <div className="md:absolute md:-top-10 md:left-8">
-                    <div className="bg-[#6ee7b7] text-[#083344] w-448px h-193px shadow-lg px-6 py-5 border border-emerald-200">
+                    <div className="bg-[#6ee7b7] text-[#083344] w-448px h-193px shadow-lg px-6 py-5 border rounded-md border-emerald-200">
                       <p className="font-semibold fort-sans text-lg">
                         Conecte-se com alunos da Unifor e contribua para atividades práticas!
                       </p>
@@ -47,7 +35,20 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            </section>
+              </section>
+            </div>
+          
+            {/* Imagem à direita com círculos */}
+            <div className="relative">
+              <img
+                src="/hero.png"
+                alt="Mãos conectando linhas coloridas"
+                className="w-515px w-671px rounded-md mx-auto"
+              />
+              {/* círculo decorativo à direita */}
+              <div className="hidden md:block absolute -right-8 top-10 h-40 w-40 rounded-full border-2 border-white/10" />
+            </div>
+
           </div>
         </div>
 
