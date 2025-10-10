@@ -20,7 +20,7 @@ export default function Navbar() {
           <NavLink to="/faqs" className={item}>FAQs</NavLink>
           <NavLink to="/news" className={item}>News</NavLink>
           <NavLink to="/voluntarios" className={item}>Voluntários</NavLink>
-          <Link to="/login" className="btn-white ml-2">ENTRAR</Link>
+          <Link to="/login" className="btn-white ml-2 w-[124px] h-[50px]">ENTRAR</Link>
         </nav>
         <Link to="/login" className="md:hidden btn-white">ENTRAR</Link>
       </div>

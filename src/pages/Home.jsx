@@ -6,7 +6,7 @@ export default function Home() {
       {/* HERO azul escuro */}
       <section className="relative  bg-[#002147]">
         <div className="container-page py-10 md:py-16">
-          <div className="grid md:grid-cols-2 gap-8 items-center">
+          <div className="grid md:grid-cols-2 gap-0 items-center">
             {/* Texto à esquerda */}
             <div className="text-white relative">
               {/* círculo decorativo */}
@@ -52,16 +52,9 @@ export default function Home() {
               {/* círculo decorativo à direita */}
               <div className="hidden md:block absolute -right-35 top-1 h-[253px] w-[253px] rounded-full border-6 border-white/10 z-[1]" />
             </div>
-
           </div>
         </div>
-
-        {/* faixa branca atravessando embaixo, como no mock */}
-        <div className="absolute inset-x-0 -bottom-8 h-9 bg-white"></div>
       </section>
-
-      {/* CARD verde sobreposto */}
-
     </main>
   );
 }
