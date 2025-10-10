@@ -4,16 +4,15 @@ const item = ({ isActive }) =>
 
 export default function Navbar() {
   return (
-    <header className="bg-[#0b2f4f]">
-      <div className="container-page py-4 flex items-center justify-between">
+    <header className="bg-[#002147] mb-[-25px]">
+      <div className="container-page flex items-center justify-between py-4">
         <Link to="/" className="flex items-center gap-3 text-white">
      
           <img
-                src="/LogoUnifor.png"
-                alt="Logo da Universidade de Fortaleza"
-                className="w-full max-w-[520px] rounded-md mx-auto"
-              />
-          
+            src="/LogoUnifor.png"
+            alt="Logo da Universidade de Fortaleza"
+            className="w-full max-w-[520px] rounded-md mx-auto"
+          />
         </Link>
         <nav className="hidden md:flex items-center gap-2 text-sm">
           <NavLink to="/" className={item}>Home</NavLink>

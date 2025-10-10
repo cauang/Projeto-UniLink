@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <main>
       {/* HERO azul escuro */}
-      <section className="relative bg-[#0b2f4f]">
+      <section className="relative  bg-[#002147]">
         <div className="container-page py-10 md:py-16">
           <div className="grid md:grid-cols-2 gap-8 items-center">
             {/* Texto à esquerda */}
@@ -15,10 +15,10 @@ export default function Home() {
               <h1 className="text-4xl md:text-5xl font-bold leading-tight">
                 Seja um<br/>Voluntário
               </h1>
-              <p className="mt-2 text-white/80 max-w-md leading-relaxed">
-                Conecte-se com alunos da Unifor e contribua para atividades práticas em diversos cursos!
+              <p className="mt-2 text-white/80 max-w-md leading-relaxed whitespace-pre-line">
+                "Conecte-se com alunos da Unifor e contribua para atividades práticas em diversos cursos!
                 Cadastre-se no Unilink e ajude colegas de diferentes áreas enquanto ganha experiência valiosa.
-                Faça a diferença agora mesmo!
+                Faça a diferença agora mesmo!"
               </p>
               <div className="mt-6">
                 <Link to="/login" className="btn-white">PARTICIPAR</Link>
@@ -28,10 +28,11 @@ export default function Home() {
               <section className="absolute -bottom-28.5 left-20 w-full">
               <div className="container-page">
                 <div className="relative">
-                  <div className="md:absolute md:-top-35">
-                    <div className="bg-[#6ee7b7] text-[#083344] w-[448px] h-[193px] shadow-lg border border-emerald-200 rounded-md
-                                    flex items-center justify-center text-center px-8">
-                      <p className="font-normal text-lg leading-snug whitespace-pre-line">
+                  <div className="md:absolute md:-top-33.5 md:-left-7">
+                    <div className="bg-[#6ee7b7] text-[#083344] w-[448px] h-[193px] shadow-lg
+               border border-emerald-200 rounded-md
+               flex items-center justify-start pl-[30px] pr-8">
+                      <p className="font-normal text-left text-lg leading-snug whitespace-pre-line">
                         {"Conecte-se com\n alunos da Unifor e\n contribua para \natividades práticas!"}
                       </p>
                     </div>
