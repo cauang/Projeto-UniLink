@@ -6,20 +6,19 @@
   body {
     font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
     background: #ffffff;
-    color: #0f172a; /* slate-900 */
+    color: #0f172a;
   }
 }
 
-/* Helpers reutilizáveis (sem reusar .btn no @apply) */
 @layer components {
   .container-page { @apply max-w-6xl mx-auto px-4; }
 
-  /* base */
+
   .btn {
     @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 font-semibold transition;
   }
 
-  /* variantes com o mesmo base + extras (copiamos os utilitários do base) */
+ 
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 font-semibold transition
            text-white bg-[#0ea5e9] hover:bg-[#0284c7];
