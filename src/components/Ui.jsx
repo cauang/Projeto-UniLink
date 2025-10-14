@@ -12,12 +12,12 @@ export function Button({ as: Tag = "button", className, variant = "primary", ...
 }
 
 export function Input({ className, ...props }) {
-  const base = "w-full rounded-xl bg-neutral-900/70 border border-neutral-800 px-3 py-2.5 outline-none ring-0 focus:border-neutral-600";
+  const base = "w-full rounded-xl bg-[#213546] border border-neutral-800 px-3 py-2.5 outline-none ring-0 focus:border-neutral-600";
   return <input className={cx(base, className)} {...props} />;
 }
 
 export function Card({ className, ...props }) {
-  const base = "bg-neutral-900/60 border border-neutral-800 backdrop-blur rounded-2xl";
+  const base = "bg-[#213546] border border-neutral-800 backdrop-blur rounded-2xl";
   return <div className={cx(base, className)} {...props} />;
 }
 
