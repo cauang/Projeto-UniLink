@@ -31,7 +31,7 @@ export default function Login() {
               />
               {/* Blob 3 (verde escuro) */}
               <div
-                className="absolute left-[40px] bottom-[10px] w-[300px] h-[220px] bg-[#10b981]"
+                className="absolute left-[55px] bottom-[10px] w-[300px] h-[220px] bg-[#10b981]"
                 style={{
                   borderRadius: "60% 40% 60% 40% / 55% 45% 55% 45%",
                   filter: "blur(0.5px)",
@@ -41,7 +41,7 @@ export default function Login() {
               {/* Moldura oval com a foto */}
               <div className="relative z-10 ml-[90px] mt-[30px] w-[340px] h-[460px] overflow-hidden rounded-[999px] shadow-2xl ring-4 ring-white/0">
                 <img
-                  src="/unifor.jpg"
+                  src="../public/hero.png"
                   alt="Entrada da Unifor"
                   className="h-full w-full object-cover"
                 />
