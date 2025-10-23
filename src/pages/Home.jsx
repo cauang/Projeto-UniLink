@@ -6,8 +6,7 @@ export default function Home() {
   return (
     <main>
       <Navbar />
-      {/* HERO azul escuro */}
-      <section className="relative  bg-[#002147]">
+      <section className="relative  bg-[#155DFC] max-x-">
         <div className="container-page py-10 md:py-16">
           <div className="grid md:grid-cols-2 gap-0 items-center">
             {/* Texto à esquerda */}

@@ -16,7 +16,8 @@ export default function LoginSplit() {
         {/* DIREITA (form de acesso) */}
         
         <div className="bg-white flex-1 items-center justify-center px-6 py-10">
-          <button className="absolute top-1 left-1 text-sm text-slate-600">← Voltar</button>
+          <Link to="/" className="mb-4 text-sm text-slate-600">← Voltar</Link>
+                  
           <div className="w-full max-w-xl  bg-white p-6 md:p-10">
             
             {/* topo/voltar opcional */}
