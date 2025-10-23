@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar.jsx";
+import Footer from "../components/Footer.jsx";
 
 export default function Home() {
   return (
     <main>
+      <Navbar />
       {/* HERO azul escuro */}
       <section className="relative  bg-[#002147]">
         <div className="container-page py-10 md:py-16">
@@ -54,6 +57,7 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <Footer />
       </section>
     </main>
   );

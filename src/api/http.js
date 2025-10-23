@@ -6,7 +6,6 @@ const api = axios.create({
   timeout: 15000,
 });
 
-// Anexa token (se existir)
 api.interceptors.request.use((config) => {
   const token = useAuth.getState().token;
   if (token) config.headers.Authorization = `Bearer ${token}`;
