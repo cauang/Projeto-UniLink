@@ -1,5 +1,5 @@
 // src/components/Footer.jsx
-export default function Footer() {
+export default function footer() {
   return (
     <footer className="bg-[#FFFFFF] mt-10">
       <div className="w-max mx-auto px-4 py-6 text-sm text-neutral-400">
