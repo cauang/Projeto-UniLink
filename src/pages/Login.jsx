@@ -9,7 +9,6 @@ export default function LoginSplit() {
       <section className="grid min-h-screen grid-cols-1 md:grid-cols-2 gap-0">
         <div className="relative bg-[#1E40FF] flex items-center justify-center overflow-hidden">
 
-
           <svg className="relative" xmlns="http://www.w3.org/2000/svg" width="530" height="607" viewBox="0 0 530 607" fill="none">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M243.061 4.70984C344.08 -11.5616 469.016 13.1371 518.064 97.4432C564.291 176.902 462.842 257.032 441.159 345.214C419.587 432.942 480.924 558.045 394.922 598.235C309.015 638.381 231.579 530.417 151.752 480.458C93.4621 443.979 22.1083 417.422 4.45926 353.873C-13.6655 288.611 26.8081 227.115 65.6198 170.319C112.978 101.017 156.485 18.6548 243.061 4.70984Z" fill="#94FF8D"/>
           </svg>
@@ -25,7 +24,7 @@ export default function LoginSplit() {
 
         {/* DIREITA (form de acesso) */}
 
-        <div className="bg-white flex-1 items-center justify-center px-6 py-10">
+        <div className="bg-white flex-center items-center justify-center px-6 py-10">
           <Link to="/" className="mb-4 text-[14px] text-slate-600">← Voltar</Link>
                   
           <div className="w-full max-w-xl  bg-white p-6 md:p-10">
@@ -38,6 +37,7 @@ export default function LoginSplit() {
 
             <form className="mt-15">
               <label htmlFor="matricula" className="block text-sm font-medium text-slate-700">Matrícula</label>
+              
               <input
                 id="matricula"
                 className="mt-2 w-full rounded-xl bg-slate-200/60 px-4 py-3 text-slate-900 placeholder:text-slate-500 focus:bg-slate-200 outline-none"
