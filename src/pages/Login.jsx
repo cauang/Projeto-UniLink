@@ -6,7 +6,7 @@ export default function LoginSplit() {
   return (
     <main className="min-h-screen w-full">
       {/* Split 50/50, sem container limitando largura */}
-      <section className="grid min-h-screen grid-cols-1 md:grid-cols-2 gap-[15%]">
+      <section className="grid min-h-screen grid-cols-1 md:grid-cols-2 gap-0">
         <div className="relative bg-[#1E40FF] flex items-center justify-center overflow-hidden">
 
 
@@ -24,9 +24,9 @@ export default function LoginSplit() {
         </div>
 
         {/* DIREITA (form de acesso) */}
-        
+
         <div className="bg-white flex-1 items-center justify-center px-6 py-10">
-          <Link to="/" className="mb-4 text-sm text-slate-600">← Voltar</Link>
+          <Link to="/" className="mb-4 text-[14px] text-slate-600">← Voltar</Link>
                   
           <div className="w-full max-w-xl  bg-white p-6 md:p-10">
             
@@ -36,7 +36,7 @@ export default function LoginSplit() {
               Unilink: Onde alunos encontram oportunidades de aprendizado colaborativo
             </p>
 
-            <form className="mt-8">
+            <form className="mt-15">
               <label htmlFor="matricula" className="block text-sm font-medium text-slate-700">Matrícula</label>
               <input
                 id="matricula"
