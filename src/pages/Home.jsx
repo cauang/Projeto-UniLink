@@ -4,9 +4,9 @@ import Footer from "../components/Footer.jsx";
 
 export default function Home() {
   return (
-    <main>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <section className="relative  bg-[#155DFC] max-x-">
+      <section className="flex-1 bg-[#155DFC]">
         <div className="container-page py-10 md:py-16">
           <div className="grid md:grid-cols-2 gap-0 items-center">
             {/* Texto à esquerda */}
@@ -31,10 +31,10 @@ export default function Home() {
               <div className="container-page">
                 <div className="relative">
                   <div className="md:absolute md:-top-33.5 md:-left-7">
-                    <div className="bg-[#6ee7b7] text-[#083344] w-[448px] h-[193px] shadow-lg
-               border border-emerald-200 rounded-md
+                    <div className="bg-[#003153] text-[#083344] w-[448px] h-[193px] shadow-lg
+               border rounded-md
                flex items-center justify-start pl-[30px] pr-8">
-                      <p className="font-normal text-left text-lg leading-snug whitespace-pre-line">
+                      <p className="font-normal text-[#FFFFFF] text-left text-lg leading-snug whitespace-pre-line">
                         {"Conecte-se com\n alunos da Unifor e\n contribua para \natividades práticas!"}
                       </p>
                     </div>
@@ -56,8 +56,8 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <Footer />
       </section>
-    </main>
+      <Footer />
+    </div>
   );
 }
