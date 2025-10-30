@@ -4,7 +4,7 @@ import Footer from "../components/Footer.jsx";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col ">
       <Navbar />
       <section className="flex-1 bg-[#155DFC]">
         <div className="container-page py-10 md:py-16">
