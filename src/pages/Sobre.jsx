@@ -1,11 +1,14 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, Children } from "react";
 import Navbar from "../components/Navbar.jsx";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer.jsx";
 import {
   GraduationCap, MessageSquare, Users, BookOpen, ShieldCheck,
   Heart, UserPlus, Star, Medal, CheckSquare, BarChart3,
-  TrendingUp, Sparkles, Loader2
+  TrendingUp, Sparkles, Loader2,
+  Calendar,
+  Group,
+  User
 } from "lucide-react";
 
 const PRIMARY_BLUE = "#1E40FF";
@@ -90,9 +93,9 @@ const Sobre = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const comoFuncionaData = [
-    { icon: CheckSquare, title: "1. Cadastro Simples", description: "Crie a sua conta em poucos passos e valide o seu vínculo académico.", color: "blue" },
-    { icon: BarChart3, title: "2. Encontre Demandas", description: "Visualize as necessidades de colaboração postadas por colegas e professores.", color: "blue" },
-    { icon: TrendingUp, title: "3. Colabore e Ganhe", description: "Participe em projetos, ganhe créditos de voluntariado e ajude a comunidade.", color: "blue" },
+    { icon: Users, title: "Cadastro Seguro", description: "Faça login com sua matrícula Unifor. Apenas alunos da universidade têm acesso à plataforma, garantindo segurança e confiabilidade.", color: "blue" },
+    { icon: Calendar, title: "Busque ou Publique", description: "Alunos de Odontologia publicam solicitações de procedimentos. Voluntários buscam e se inscrevem nos que mais lhes interessam.", color: "green" },
+    { icon: CheckSquare, title: "Confirmação & Atendimento", description: "Receba confirmação do agendamento e lembretes automáticos. Tudo organizado em um só lugar para sua comodidade.", color: "" },
   ];
 
   const procedimentosData = [
@@ -122,7 +125,7 @@ const Sobre = () => {
 
   return (
     
-    <div className="min-h-screen font-sans bg-slate-50">
+    <div className="min-h-screen font-sans bgwhite">
       <header className="py-20 md:py-32 text-white text-center rounded-b-3xl shadow-xl" style={{ backgroundColor: PRIMARY_BLUE }}>
         <div className="container mx-auto px-4 max-w-4xl">
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
@@ -252,7 +255,7 @@ const Sobre = () => {
         </div>
       </div>
 
-      <section className="py-20 bg-slate-50">
+      <section className="py-20 bg-white">
         <h2 className="text-3xl font-bold text-center text-slate-800 mb-12">Pronto para Participar?</h2>
         <div className="container mx-auto px-4 flex flex-wrap justify-center gap-8">
           <div className="flex-1 min-w-[300px] max-w-sm p-6 rounded-2xl shadow-xl border-2 transition bg-white hover:shadow-2xl" style={{ borderColor: LIGHT_GREEN }}>
