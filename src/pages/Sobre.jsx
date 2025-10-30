@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import { Link } from "react-router-dom";
 import Footer from "../components/Footer.jsx";
 import {
   GraduationCap, MessageSquare, Users, BookOpen, ShieldCheck,
@@ -260,28 +261,31 @@ const Sobre = () => {
             <p className="text-sm text-slate-600 mb-6">Receba tratamento odontológico gratuito e ajude na formação de futuros dentistas</p>
             <ul className="space-y-2 text-slate-700 mb-8">
               <li><span className="text-green-600 mr-2"></span> O que você ganha:</li>
-              <li className="flex items-center text-sm"><span className="text-green-600 mr-2">✓</span> Ganhe Certificados.</li>
-              <li className="flex items-center text-sm"><span className="text-green-600 mr-2">✓</span> Desenvolva Liderança.</li>
-              <li className="flex items-center text-sm"><span className="text-green-600 mr-2">✓</span> Faça Networking.</li>
+              <li className="flex items-center text-sm"><span className="text-green-600 mr-2">✓</span> Tratamentos odontológicos 100% gratuitos</li>
+              <li className="flex items-center text-sm"><span className="text-green-600 mr-2">✓</span> Atendimento de qualidade supervisionado</li>
+              <li className="flex items-center text-sm"><span className="text-green-600 mr-2">✓</span> Horários flexíveis que se encaixam na sua rotina</li>
+              <li className="flex items-center text-sm"><span className="text-green-600 mr-2">✓</span> Pontos de colaboração e certificados</li>
             </ul>
-            <button className="w-full px-4 py-3 font-semibold rounded-full text-slate-900 shadow-md transition hover:brightness-95" style={{ backgroundColor: LIGHT_GREEN }}>
-              Cadastre-se como Voluntário
-            </button>
+            <Link to="/login" className="w-full inline-flex items-center justify-center px-4 py-3 font-semibold rounded-full text-slate-900 shadow-md transition hover:brightness-95" style={{ backgroundColor: LIGHT_GREEN }}>
+              Fazer Login como Voluntário<Heart size={20} className=" ml-2 text-red-500 mr-2" />
+            </Link>
           </div>
 
           <div className="flex-1 min-w-[300px] max-w-sm p-6 rounded-2xl shadow-xl border-2 transition bg-white hover:shadow-2xl" style={{ borderColor: PRIMARY_BLUE }}>
             <h3 className="text-xl font-bold text-slate-900 mb-4 flex items-center">
-              <UserPlus size={24} style={{ color: PRIMARY_BLUE }} className="mr-2" /> Sou Aluno e quero Solicitar
+              <UserPlus size={24} style={{ color: PRIMARY_BLUE }} className="mr-2" /> Sou Aluno de Odontologia
             </h3>
-            <p className="text-sm text-slate-600 mb-6">Precisa de ajuda com alguma matéria ou projeto? Encontre o seu mentor ideal.</p>
+            <p className="text-sm text-slate-600 mb-6">Encontre voluntários para seus procedimentos práticos de forma rápida e organizada</p>
             <ul className="space-y-2 text-slate-700 mb-8">
-              <li className="flex items-center text-sm"><span className="text-blue-600 mr-2">✓</span> Apoio Gratuito.</li>
-              <li className="flex items-center text-sm"><span className="text-blue-600 mr-2">✓</span> Aulas de Reforço.</li>
-              <li className="flex items-center text-sm"><span className="text-blue-600 mr-2">✓</span> Encontre Grupos.</li>
+              <li><span className="text-green-600 mr-2"></span> O que você ganha:</li>
+              <li className="flex items-center text-sm"><span className="text-blue-600 mr-2">✓</span>Encontre voluntários facilmente na comunidade Unifor</li>
+              <li className="flex items-center text-sm"><span className="text-blue-600 mr-2">✓</span> Sistema completo de agendamento e notificações</li>
+              <li className="flex items-center text-sm"><span className="text-blue-600 mr-2">✓</span> Elimine custos com voluntários externos</li>
+              <li className="flex items-center text-sm"><span className="text-blue-600 mr-2">✓</span> Organize todos seus procedimentos em um lugar</li>
             </ul>
-            <button className="w-full px-4 py-3 font-semibold rounded-full text-white shadow-md transition hover:opacity-90" style={{ backgroundColor: PRIMARY_BLUE }}>
+            <Link to="/login" className="w-full inline-flex items-center justify-center px-4 py-3 font-semibold rounded-full text-white shadow-md transition hover:opacity-90" style={{ backgroundColor: PRIMARY_BLUE }}>
               Solicitar Apoio
-            </button>
+            </Link>
           </div>
         </div>
       </section>
