@@ -30,7 +30,7 @@ export default function Home() {
               <section className="absolute -bottom-28.5 left-20 w-full">
               <div className="container-page">
                 <div className="relative">
-                  <div className="md:absolute md:-top-33.5 md:-left-7">
+                  <div className="relative md:-top-[-55px] md:-left-22">
                     <div className="bg-[#003153] text-[#083344] w-[448px] h-[193px] shadow-lg
                border rounded-md
                flex items-center justify-start pl-[30px] pr-8">

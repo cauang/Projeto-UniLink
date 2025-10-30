@@ -5,9 +5,12 @@
   html, body, #root {
     margin: 0;
     padding: 0;
-    height: 100vh;
-    width: 100vw;
-    
+    /* Make the app fill the full viewport height so Tailwind's min-h-screen works
+       and the first viewport can be controlled by components (no fixed 75vh). */
+    height: 100%;
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden; /* prevent horizontal overflow from pushing scroll */
   }
   body {
     font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
@@ -17,7 +20,9 @@
 }
 
 @layer components {
-  .container-page { @apply max-w-6xl mx-auto px-4; }
+  /* container-page: use ~75% width on md+ screens but keep a max width for very large
+    screens; on small screens use near-full width with padding. */
+  .container-page { @apply w-11/12 md:w-3/4 max-w-6xl mx-auto px-4; }
 
 
   .btn {
