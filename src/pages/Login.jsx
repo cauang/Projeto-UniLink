@@ -37,7 +37,6 @@ export default function LoginSplit() {
 
             <form className="mt-15">
               <label htmlFor="matricula" className="block text-sm font-medium text-slate-700">Matrícula</label>
-              
               <input
                 id="matricula"
                 className="mt-2 w-full rounded-xl bg-slate-200/60 px-4 py-3 text-slate-900 placeholder:text-slate-500 focus:bg-slate-200 outline-none"

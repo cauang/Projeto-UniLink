@@ -4,6 +4,7 @@ import Login from "./pages/Login.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
+import Sobre from "./pages/Sobre.jsx";
 import { Cadastro } from "./pages/cadastro.jsx";
 
 export default function App() {
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/cadastro" element={<Cadastro />} />
+        <Route path="/sobre" element={<Sobre />} />
       </Routes>
       
     </div>
