@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import Navbar from "../components/Navbar.jsx";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer.jsx";
 import {
@@ -120,6 +121,7 @@ const Sobre = () => {
   }, [userNeed]);
 
   return (
+    
     <div className="min-h-screen font-sans bg-slate-50">
       <header className="py-20 md:py-32 text-white text-center rounded-b-3xl shadow-xl" style={{ backgroundColor: PRIMARY_BLUE }}>
         <div className="container mx-auto px-4 max-w-4xl">
