@@ -4,16 +4,16 @@ import Footer from "../components/Footer.jsx";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col ">
+    <div className="h-screen overflow-auto flex flex-col">
       <Navbar />
-      <section className="flex-1 bg-[#155DFC]">
-        <div className="container-page py-10 md:py-16">
+      <section className="flex-1 bg-[#155DFC] flex items-center justify-center min-h-fit">
+        <div className="container-page py-6 md:py-8">
           <div className="grid md:grid-cols-2 gap-0 items-center">
             {/* Texto à esquerda */}
             <div className="text-white relative">
               {/* círculo decorativo */}
               <div className="absolute -left-6 -top-6 h-35 w-35 rounded-full border border-white/10" />
-              <div className="relative -top-25 -right-20">
+              <div className="space-y-4">
               <h1 className="text-4xl md:text-5xl font-bold leading-tight">
                 Seja um<br/>Voluntário
               </h1>
@@ -27,29 +27,22 @@ export default function Home() {
               </div>
               </div>
 
-              <section className="absolute -bottom-28.5 left-20 w-full">
-              <div className="container-page">
-                <div className="relative">
-                  <div className="relative md:-top-[-55px] md:-left-22">
-                    <div className="bg-[#003153] text-[#083344] w-[448px] h-[193px] shadow-lg
-               border rounded-md
-               flex items-center justify-start pl-[30px] pr-8">
-                      <p className="font-normal text-[#FFFFFF] text-left text-lg leading-snug whitespace-pre-line">
-                        {"Conecte-se com\n alunos da Unifor e\n contribua para \natividades práticas!"}
-                      </p>
-                    </div>
-                  </div>
+              {/* Cartão informativo em fluxo para alinhar com o título e ser responsivo */}
+              <div className="mt-8 md:mt-12">
+                <div className="bg-[#003153] text-white max-w-md w-full h-auto md:h-[193px] shadow-lg border rounded-md flex items-center justify-start p-6">
+                  <p className="font-normal text-white text-left text-lg leading-snug whitespace-pre-line">
+                    {"Conecte-se com\n alunos da Unifor e\n contribua para \natividades práticas!"}
+                  </p>
                 </div>
               </div>
-              </section>
             </div>
-          
+
             {/* Imagem à direita com círculos */}
-            <div className="relative z-[2]">
+            <div className="relative z-[2] flex justify-center">
               <img
                 src="/hero.png"
                 alt="Mãos conectando linhas coloridas"
-                className="w-[515px] h-[671px] rounded-md mx-auto"
+                className="w-full max-w-lg h-auto rounded-md mx-auto"
               />
               {/* círculo decorativo à direita */}
               <div className="hidden md:block absolute -right-35 top-1 h-[253px] w-[253px] rounded-full border-6 border-white/10 z-[1]" />

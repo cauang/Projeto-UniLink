@@ -4,7 +4,7 @@ const item = ({ isActive }) =>
 
 export default function Navbar() {
   return (
-  <header className="bg-[#155DFC] mb-0">
+  <header className="bg-[#155DFC] mb-0 flex-shrink-0">
       <div className="container-page flex items-center justify-between py-4">
         <Link to="/" className="flex items-center gap-3 text-white">
      

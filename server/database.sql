@@ -1,0 +1,8 @@
+CREATE TABLE usuarios (
+    id SERIAL PRIMARY KEY,
+    matricula VARCHAR(20) UNIQUE NOT NULL,
+    senha VARCHAR(60) NOT NULL,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
