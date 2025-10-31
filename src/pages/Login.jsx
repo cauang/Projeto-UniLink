@@ -1,8 +1,43 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
+import { toast } from "react-hot-toast";
+import api from "../api/http";
+import useAuth from "../store/useAuth";
 
 export default function LoginSplit() {
+  const [matricula, setMatricula] = useState("");
+  const [senha, setSenha] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const setToken = useAuth((state) => state.setToken);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!matricula || !senha) {
+      toast.error("Preencha todos os campos");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await api.post("/auth/login", {
+        matricula,
+        senha
+      });
+      
+      console.log('Resposta do servidor:', response.data);
+      setToken(response.data.token);
+      toast.success("Login realizado com sucesso!");
+      navigate("/dashboard");
+    } catch (error) {
+      console.error(error);
+      toast.error(error.response?.data?.message || "Erro ao fazer login");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main className="min-h-screen w-full">
       <section className="grid min-h-screen grid-cols-1 md:grid-cols-2 gap-0">
