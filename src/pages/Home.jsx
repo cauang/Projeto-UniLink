@@ -29,7 +29,7 @@ export default function Home() {
 
               {/* Cartão informativo em fluxo para alinhar com o título e ser responsivo */}
               <div className="mt-8 md:mt-12">
-                <div className="bg-[#003153] text-white max-w-md w-full h-auto md:h-[193px] shadow-lg border rounded-md flex items-center justify-start p-6">
+                <div className="bg-[#003153] text-white max-w-md w-full h-auto md:h-[193px] shadow-lg rounded-md flex items-center justify-start p-6">
                   <p className="font-normal text-white text-left text-lg leading-snug whitespace-pre-line">
                     {"Conecte-se com\n alunos da Unifor e\n contribua para \natividades práticas!"}
                   </p>
