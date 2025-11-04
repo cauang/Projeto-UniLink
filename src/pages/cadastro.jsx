@@ -24,15 +24,33 @@ export function Cadastro() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Validação simples
-    if (!form.nome || !form.curso || !form.matricula || !form.email || !form.senha || !form.semestre) {
+    if (
+      !form.nome ||
+      !form.curso ||
+      !form.matricula ||
+      !form.email ||
+      !form.senha ||
+      !form.semestre ||
+      !form.confirmarSenha
+    ) {
       toast.error("Preencha todos os campos obrigatórios");
       return;
+    }    if (form.senha !== form.confirmarSenha) {
+      toast.error("As senhas não coincidem");
+      return;
     }
-    setLoading(true);
+    
+    if (form.senha.length < 6) {
+      toast.error("A senha deve ter no mínimo 6 caracteres");
+      return;
+    }
+     setLoading(true);
     try {
-      await api.post("/auth/register", {
-        ...form
-      });
+      // Remover 'confirmarSenha' do objeto enviado para a API
+      const { confirmarSenha, ...formData } = form;
+      
+      await api.post("/auth/register", formData);
+      
       toast.success("Cadastro realizado com sucesso!");
       navigate("/login");
     } catch (error) {
@@ -43,11 +61,19 @@ export function Cadastro() {
   };
 
     const cursos = [
+    "Ciência da Computação",
     "Medicina",
     "Direito",
-    "Engenharia de Software",
     "Psicologia",
     "Administração",
+    "Arquitetura e Urbanismo",
+    "Engenharia Civil",
+    "Engenharia Elétrica",
+    "Engenharia Mecânica",
+    "Engenharia Química",
+    "Engenharia de Produção",
+    "Farmácia",
+    "Veterinária"
   ];
   const semestres = Array.from({ length: 12 }, (_, i) => `${i + 1}º Semestre`);
 
