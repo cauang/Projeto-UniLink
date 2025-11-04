@@ -209,27 +209,27 @@ const ProcedimentoInscritoItem = ({ item, onCancelar }) => (
 
 // Componente para o Item de "Procedimentos Disponíveis"
 const ProcedimentoDisponivelItem = ({ item, onInscrever }) => (
-  <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+  <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+    <div className="flex flex-col md:flex-row justify-between items-start gap-6">
       {/* Informações */}
       <div className="flex-1">
-        <h3 className="font-semibold text-lg text-gray-800">{item.titulo}</h3>
-        <p className="text-sm text-gray-600">Estudante: {item.estudante}</p>
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-500 mt-2">
-          <span className="flex items-center gap-2"><CalendarDays className="h-4 w-4" /> {item.data}</span>
-          <span className="flex items-center gap-2"><Clock className="h-4 w-4" /> {item.hora}</span>
-          <span className="flex items-center gap-2"><MapPin className="h-4 w-4" /> {item.local}</span>
+        <h3 className="font-semibold text-2xl text-gray-800 mb-1">{item.titulo}</h3>
+        <p className="text-sm text-gray-600 mb-4">{item.estudante}</p>
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-blue-700 mt-4">
+          <span className="flex items-center gap-2"><CalendarDays className="h-5 w-5" /> {item.data}</span>
+          <span className="flex items-center gap-2"><Clock className="h-5 w-5" /> {item.hora}</span>
+          <span className="flex items-center gap-2"><MapPin className="h-5 w-5" /> {item.local}</span>
         </div>
       </div>
       
       {/* Ação */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto mt-3 md:mt-0">
-        <span className="flex items-center justify-center gap-1 text-xs text-blue-600 bg-blue-100 px-3 py-1 rounded-full w-full sm:w-auto">
-          <Info className="h-3 w-3" /> {item.status}
+      <div className="flex flex-col items-end gap-2 w-full md:w-auto mt-3 md:mt-0">
+        <span className="flex items-center justify-center gap-1 text-xs text-blue-700 bg-blue-100 px-3 py-1 rounded-full w-auto">
+          <Info className="h-4 w-4" /> {item.status}
         </span>
         <button 
           onClick={() => onInscrever(item.id)} // Ação de inscrever
-          className="bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-blue-700 w-full sm:w-auto"
+          className="bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-blue-700 w-auto"
         >
           Inscrever-se
         </button>
@@ -437,5 +437,6 @@ export default function DashboardVoluntario() {
     </div>
   );
 }
+
 
 
