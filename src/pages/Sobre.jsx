@@ -259,9 +259,9 @@ const Sobre = () => {
         <h2 className="text-3xl font-bold text-center text-slate-800 mb-12">Pronto para Participar?</h2>
         <div className="container mx-auto px-4 flex flex-wrap justify-center gap-8">
           <div className="flex-1 min-w-[300px] max-w-sm p-6 rounded-2xl shadow-xl border-2 transition bg-white hover:shadow-2xl" style={{ borderColor: LIGHT_GREEN }}>
-            <Heart size={24} className="text-red-500 mr-2" />
+            
             <h3 className="text-xl font-bold text-slate-900 mb-4 flex items-center">
-              <span className="text-red-500 mr-2" /> Quero me Voluntariar
+              <span className="text-red-500 mr-2" /> <Heart size={24} className="text-red-500 mr-2" /> Quero me Voluntariar
             </h3>
             <p className="text-sm text-slate-600 mb-6">Receba tratamento odontológico gratuito e ajude na formação de futuros dentistas</p>
             <ul className="space-y-2 text-slate-700 mb-8">
