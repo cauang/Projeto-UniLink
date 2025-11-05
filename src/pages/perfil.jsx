@@ -12,17 +12,19 @@ import {
   Briefcase,
   GraduationCap,
   BookText,
+  CalendarDays, // Para aba de notificações
 } from "lucide-react";
 
 // --- Constantes ---
 const PRIMARY_BLUE = "#1E40FF";
 
 // --- DADOS ESTÁTICOS ---
+// Dados do perfil baseados na imagem
 const profileData = {
   nome: "João Pedro Santos",
   curso: "Engenharia da Computação",
   tipo: "Voluntário",
-  matricula: "ODONTO",
+  matricula: "ODONTO", // A imagem mostra ODONTO
   iniciais: "JPS",
   email: "joao.santos@edu.unifor.br",
   telefone: "(85) 98765-4321",
@@ -30,6 +32,7 @@ const profileData = {
   biografia: "Conte um pouco sobre você...",
 };
 
+// Dados das estatísticas baseados na imagem
 const statsData = {
   procedimentos: 8,
   pontos: 80,
@@ -93,7 +96,11 @@ const ProfileCard = ({ profile }) => (
         Matrícula:{" "}
         <span className="font-medium text-gray-800">{profile.matricula}</span>
       </p>
-      <button className="mt-6 w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
+      {/* ADICIONADO CONSOLE.LOG */}
+      <button
+        onClick={() => console.log("Clicou em: Editar Perfil")}
+        className="mt-6 w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition"
+      >
         <Edit size={16} />
         Editar Perfil
       </button>
@@ -128,16 +135,20 @@ const StatsCard = ({ stats }) => (
 const ProfileTabs = ({ activeTab, setActiveTab }) => {
   const tabs = ["Informações", "Notificações", "Segurança"];
   return (
-    // Container cinza e arredondado (rounded-full)
+    // MUDANÇA: 'space-x-1' removido, 'justify-around' adicionado para centralizar
     <nav
-      className="w-full p-1.5 rounded-full flex items-center justify-around"
+      className="w-full p-1.5 rounded-lg flex items-center justify-around"
       style={{ backgroundColor: "#ECECF0" }} // <-- COR EXATA APLICADA
     >
       {tabs.map((tab) => (
         <button
           key={tab}
-          onClick={() => setActiveTab(tab)}
-          className={`text-center px-6 py-2 text-sm font-medium transition rounded-full ${
+          // ADICIONADO CONSOLE.LOG
+          onClick={() => {
+            console.log("Clicou na aba:", tab);
+            setActiveTab(tab);
+          }}
+          className={`text-center px-5 py-2 text-sm font-medium transition rounded-md ${ // <-- 'rounded-md'
             activeTab === tab
               ? "bg-white shadow-sm text-gray-900" // Estilo Ativo: Botão branco
               : "text-gray-600 hover:text-gray-700" // Estilo Inativo: Transparente
@@ -225,6 +236,89 @@ const InfoContent = ({ profile }) => (
   </div>
 );
 
+// --- Componente Toggle Switch ---
+const ToggleSwitch = ({ enabled, setEnabled }) => (
+  // ADICIONADO CONSOLE.LOG
+  <button
+    onClick={() => {
+      console.log("Clicou no Toggle Switch!");
+      setEnabled(!enabled);
+    }}
+    className={`relative inline-flex items-center h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
+      enabled ? "bg-blue-600" : "bg-gray-300"
+    }`}
+  >
+    <span
+      aria-hidden="true"
+      className={`inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+        enabled ? "translate-x-5" : "translate-x-0"
+      }`}
+    />
+  </button>
+);
+
+// --- Componente de Conteúdo (para a aba "Notificações") ---
+const NotificationContent = () => {
+  // Estados para controlar cada toggle
+  const [emailNotif, setEmailNotif] = useState(true);
+  const [pushNotif, setPushNotif] = useState(true);
+  const [lembretes, setLembretes] = useState(true);
+
+  const items = [
+    {
+      icon: Mail,
+      title: "Notificações por E-mail",
+      description: "Receba atualizações importantes por e-mail",
+      enabled: emailNotif,
+      setEnabled: setEmailNotif,
+    },
+    {
+      icon: Bell,
+      title: "Notificações Push",
+      description: "Receba notificações em tempo real no navegador",
+      enabled: pushNotif,
+      setEnabled: setPushNotif,
+    },
+    {
+      icon: CalendarDays, // Ícone atualizado
+      title: "Lembretes de Agendamento",
+      description: "Receba lembretes antes dos procedimentos agendados",
+      enabled: lembretes,
+      setEnabled: setLembretes,
+    },
+  ];
+
+  return (
+    <div className="p-6">
+      <h3 className="text-xl font-semibold text-gray-800">
+        Preferências de Notificação
+      </h3>
+      <p className="text-sm text-gray-500 mb-6">
+        Gerencie como você deseja receber notificações
+      </p>
+      <div className="space-y-6">
+        {items.map((item) => (
+          <div
+            key={item.title}
+            className="flex justify-between items-center"
+          >
+            <div className="flex items-center gap-3">
+              <item.icon className="h-5 w-5 text-blue-600" />
+              <div>
+                <h4 className="text-sm font-medium text-gray-800">
+                  {item.title}
+                </h4>
+                <p className="text-sm text-gray-500">{item.description}</p>
+              </div>
+            </div>
+            <ToggleSwitch enabled={item.enabled} setEnabled={item.setEnabled} />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 // --- Componente de Conteúdo (para as outras abas) ---
 const PlaceholderContent = ({ tab }) => (
   <div className="p-6 text-center text-gray-500">
@@ -240,7 +334,9 @@ export default function Perfil() {
   return (
     <div className="min-h-screen bg-gray-100">
       <PerfilHeader />
-      <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      {/* CORREÇÃO: Adicionado 'relative z-10' para garantir que o 'main'
+          fique "em cima" do header e possa receber cliques. */}
+      <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col lg:flex-row lg:gap-8">
           
           {/* Coluna da Esquerda (com os dois cards) */}
@@ -258,7 +354,7 @@ export default function Perfil() {
             <div className="bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
               {activeTab === "Informações" && <InfoContent profile={profileData} />}
               {activeTab === "Notificações" && (
-                <PlaceholderContent tab="Notificações" />
+                <NotificationContent />
               )}
               {activeTab === "Segurança" && (
                 <PlaceholderContent tab="Segurança" />
