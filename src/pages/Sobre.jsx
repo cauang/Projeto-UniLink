@@ -522,7 +522,7 @@ const Sobre = () => {
             style={{ borderColor: PRIMARY_BLUE }}
           >
             <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4 bg-blue-600">
-              <GraduationCap size={32} className="text-white" />
+              <Stethoscope size={32} className="text-white" />
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-3">
               Sou Aluno de Odontologia
@@ -560,7 +560,7 @@ const Sobre = () => {
               style={{ backgroundColor: PRIMARY_BLUE }}
             >
               Fazer Login - Odontologia{" "}
-              <ArrowRight size={20} className="ml-2" />
+              <Stethoscope size={20} className="ml-2" />
             </Link>
             <p className="text-xs text-gray-500 text-center mt-3">
               Use sua matrícula Unifor para acessar

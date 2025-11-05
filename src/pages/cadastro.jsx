@@ -79,12 +79,12 @@ export function Cadastro() {
 
 
   return (
-    <main className="min-h-screen w-full font-sans"> {/* Adicionado font-sans global */}
+    <main className="min-h-screen w-full font-sans"> 
       <section className="grid min-h-screen grid-cols-1 md:grid-cols-2 gap-0">
-        {/* ESQUERDA (imagem e formas) - Mantido como no seu código original */}
+        {/* ESQUERDA (imagem e formas)*/}
         <div className="relative bg-[#1E40FF] hidden md:flex items-center justify-center overflow-hidden">
           {/* SVG da mancha verde clara (maior) */}
-          <svg
+          <svg 
             className="absolute w-[530px] h-[607px]"
             viewBox="0 0 530 607"
             fill="none"
@@ -122,7 +122,6 @@ export function Cadastro() {
               alt="Entrada da Unifor"
               className="h-full w-full object-cover"
               onError={(e) => {
-                // Fallback em caso de erro ao carregar a imagem
                 e.target.onerror = null; 
                 e.target.src="https://placehold.co/360x480/1E40FF/FFFFFF?text=Imagem+Unifor";
               }}
@@ -134,7 +133,7 @@ export function Cadastro() {
         <div className="bg-white flex items-center justify-center px-6 py-10 min-h-screen overflow-y-auto">
           <div className="w-full max-w-xl bg-white p-6 md:p-10">
             <Link
-              to="/login" // O link "Voltar" da screenshot está no topo
+              to="/login" 
               className="inline-flex items-center gap-1 mb-4 text-sm text-slate-600 hover:text-slate-900"
             >
               <svg
