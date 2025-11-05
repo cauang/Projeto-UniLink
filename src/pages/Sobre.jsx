@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react"; // Importa o useCallback
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer.jsx";
 import {
@@ -23,7 +23,7 @@ import {
   Lock,
   University,
   Bell,
-  ArrowRight, 
+  ArrowRight,
 } from "lucide-react";
 
 // --- Constantes de Cor ---
@@ -103,6 +103,23 @@ const SegurancaCard = ({ icon: Icon, title, description, color }) => (
 
 // --- Componente Principal ---
 const Sobre = () => {
+  // --- ADICIONADO: Função para Scroll Suave ---
+  const handleScroll = useCallback((e) => {
+    e.preventDefault(); 
+    const href = e.currentTarget.getAttribute("href");
+    if (!href) return;
+
+    const targetId = href.substring(href.indexOf("#") + 1);
+    const targetElement = document.getElementById(targetId);
+
+    if (targetElement) {
+      targetElement.scrollIntoView({
+        behavior: "smooth", 
+      });
+    }
+  }, []);
+  
+
   // Dados baseados no screenshot
   const comoFuncionaData = [
     {
@@ -163,7 +180,7 @@ const Sobre = () => {
       description: "Para próteses e aparelhos",
     },
     {
-      icon: ClipboardList, 
+      icon: ClipboardList,
       title: "Tratamento de Canal",
       description: "Procedimentos endodônticos",
     },
@@ -219,6 +236,7 @@ const Sobre = () => {
           </p>
           <a
             href="#como-funciona"
+            onClick={handleScroll} // <-- ADICIONADO O onClick
             className="inline-flex items-center justify-center px-8 py-3 rounded-full shadow-lg text-slate-900 font-semibold bg-white hover:bg-slate-100 transition"
           >
             Saiba Mais
@@ -329,7 +347,7 @@ const Sobre = () => {
                 </li>
               </ul>
             </div>
-            
+
             {/* Card Alunos */}
             <div
               className="flex-1 min-w-[300px] max-w-md p-6 rounded-2xl shadow-lg border"
@@ -337,7 +355,7 @@ const Sobre = () => {
             >
               <div className="flex items-center gap-3 mb-3">
                 <div className="p-2 bg-blue-600 rounded-full inline-flex">
-                  <Stethoscope  size={24} className="text-white" />
+                  <Stethoscope size={24} className="text-white" />
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-gray-900">
@@ -453,7 +471,6 @@ const Sobre = () => {
           Escolha como você deseja fazer parte da comunidade Unilink
         </p>
         <div className="container mx-auto px-4 flex flex-wrap justify-center gap-8">
-          
           {/* Card Voluntário */}
           <div
             className="flex-1 min-w-[300px] max-w-sm p-8 rounded-2xl shadow-xl border-2 transition bg-white hover:shadow-2xl"
@@ -567,7 +584,7 @@ const Sobre = () => {
             </p>
           </div>
         </div>
-        
+
         {/* Dúvidas Link */}
         <div className="text-center mt-12">
           <p className="text-sm text-gray-600">

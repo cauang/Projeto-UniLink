@@ -8,6 +8,7 @@ import Sobre from "./pages/Sobre.jsx";
 import { Cadastro } from "./pages/cadastro.jsx";
 import DashboardVoluntario from "./pages/DashboardVoluntario.jsx";
 import DetalhesProcedimento from "./pages/DetalhesProcedimento.jsx";
+import perfil from "./pages/perfil.jsx";
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="/sobre" element={<Sobre />} />
         <Route path="/voluntarios" element={<DashboardVoluntario />} />
         <Route path="/procedimento/:id" element={<DetalhesProcedimento />} />
+        <Route path="/perfil" element={perfil()} />
       </Routes>
       
     </div>
