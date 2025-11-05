@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import Navbar from "../components/Navbar.jsx"; // Removido pois não estava no seu código original
-// import Footer from "../components/Footer.jsx"; // Removido pois não estava no seu código original
+import Footer from "../components/Footer.jsx";
 import {
   Heart,
+  Stethoscope,
   UserPlus,
   Star,
   ShieldCheck,
@@ -23,7 +23,7 @@ import {
   Lock,
   University,
   Bell,
-  ArrowRight, // Adicionado para o botão
+  ArrowRight, 
 } from "lucide-react";
 
 // --- Constantes de Cor ---
@@ -60,7 +60,7 @@ const ComoFuncionaCard = ({ icon: Icon, title, description, color, step }) => (
     </div>
     {/* Círculo do número */}
     <div
-      className={`w-6 h-6 rounded-full flex items-center justify-center text-white font-bold text-sm mb-3 ${
+      className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm mb-3 ${
         color === "blue"
           ? "bg-blue-600"
           : color === "green"
@@ -163,7 +163,7 @@ const Sobre = () => {
       description: "Para próteses e aparelhos",
     },
     {
-      icon: ClipboardList, // Ícone genérico para Canal
+      icon: ClipboardList, 
       title: "Tratamento de Canal",
       description: "Procedimentos endodônticos",
     },
@@ -204,8 +204,6 @@ const Sobre = () => {
 
   return (
     <div className="min-h-screen font-sans bg-gray-50">
-      {/* <Navbar /> */} {/* Descomente se você tiver um componente Navbar */}
-      
       {/* Header */}
       <header
         className="py-20 md:py-28 text-white text-center rounded-b-3xl shadow-lg"
@@ -339,7 +337,7 @@ const Sobre = () => {
             >
               <div className="flex items-center gap-3 mb-3">
                 <div className="p-2 bg-blue-600 rounded-full inline-flex">
-                  <GraduationCap size={24} className="text-white" />
+                  <Stethoscope  size={24} className="text-white" />
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-gray-900">
@@ -583,8 +581,7 @@ const Sobre = () => {
           </p>
         </div>
       </section>
-
-      {/* <Footer /> */} {/* Descomente se você tiver um componente Footer */}
+      <Footer />
     </div>
   );
 };
