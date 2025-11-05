@@ -96,7 +96,6 @@ const ProfileCard = ({ profile }) => (
         Matrícula:{" "}
         <span className="font-medium text-gray-800">{profile.matricula}</span>
       </p>
-      {/* ADICIONADO CONSOLE.LOG */}
       <button
         onClick={() => console.log("Clicou em: Editar Perfil")}
         className="mt-6 w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition"
@@ -135,20 +134,19 @@ const StatsCard = ({ stats }) => (
 const ProfileTabs = ({ activeTab, setActiveTab }) => {
   const tabs = ["Informações", "Notificações", "Segurança"];
   return (
-    // MUDANÇA: 'space-x-1' removido, 'justify-around' adicionado para centralizar
+    // Container cinza e arredondado (rounded-full)
     <nav
-      className="w-full p-1.5 rounded-lg flex items-center justify-around"
+      className="w-full p-1.5 rounded-full flex items-center justify-around" // <-- 'rounded-full' e 'justify-around'
       style={{ backgroundColor: "#ECECF0" }} // <-- COR EXATA APLICADA
     >
       {tabs.map((tab) => (
         <button
           key={tab}
-          // ADICIONADO CONSOLE.LOG
           onClick={() => {
             console.log("Clicou na aba:", tab);
             setActiveTab(tab);
           }}
-          className={`text-center px-5 py-2 text-sm font-medium transition rounded-md ${ // <-- 'rounded-md'
+          className={`text-center px-6 py-2 text-sm font-medium transition rounded-full ${ // <-- 'rounded-full'
             activeTab === tab
               ? "bg-white shadow-sm text-gray-900" // Estilo Ativo: Botão branco
               : "text-gray-600 hover:text-gray-700" // Estilo Inativo: Transparente
@@ -238,7 +236,6 @@ const InfoContent = ({ profile }) => (
 
 // --- Componente Toggle Switch ---
 const ToggleSwitch = ({ enabled, setEnabled }) => (
-  // ADICIONADO CONSOLE.LOG
   <button
     onClick={() => {
       console.log("Clicou no Toggle Switch!");
