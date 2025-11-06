@@ -16,7 +16,7 @@ import {
   AlertTriangle,
   ChevronLeft,
 } from "lucide-react";
-import api from "../api/mock.js"; // <-- Importa a API central
+import api from "../api/mock.js";
 
 // --- Constantes ---
 const PRIMARY_BLUE = "#1E40FF";
