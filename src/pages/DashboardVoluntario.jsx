@@ -17,6 +17,8 @@ import {
   ChevronLeft,
 } from "lucide-react";
 import api from "../api/mock.js";
+import ConfirmacaoInscricao from "./ConfirmacaoInscricao";
+import ConfirmacaoCancelamento from "./ConfirmacaoCancelamento";
 
 // --- Constantes ---
 const PRIMARY_BLUE = "#1E40FF";
@@ -189,6 +191,10 @@ const ErrorDisplay = ({ message }) => (
 
 // --- Componente Principal ---
 export default function DashboardVoluntario() {
+  const [selectedProc, setSelectedProc] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [selectedCancelProc, setSelectedCancelProc] = useState(null);
   const [profile, setProfile] = useState(null);
   const [summary, setSummary] = useState(null);
   const [inscricoes, setInscricoes] = useState([]);
@@ -234,6 +240,32 @@ export default function DashboardVoluntario() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const openModalConfirmacao = (id) => {
+    const proc = disponiveis.find((p) => p.id === id);
+    setSelectedProc(proc);
+    setShowConfirmModal(true);
+  };
+
+  const confirmInscricao = async () => {
+    setShowConfirmModal(false);
+    const id = selectedProc.id;
+    await handleInscricao(id);
+    setSelectedProc(null);
+  };
+
+  const openModalCancelamento = (id) => {
+    const proc = inscricoes.find((p) => p.id === id);
+    setSelectedCancelProc(proc);
+    setShowCancelModal(true);
+  };
+
+  const confirmCancelamento = async () => {
+    setShowCancelModal(false);
+    const id = selectedCancelProc.id;
+    await handleCancelamento(id); // aqui você chama sua função que cancela
+    setSelectedCancelProc(null);
+  };
 
   // --- Funções de Inscrição/Cancelamento (Simuladas) ---
   const handleInscricao = async (id) => {
@@ -357,7 +389,7 @@ export default function DashboardVoluntario() {
                 <ProcedimentoInscritoItem
                   key={proc.id}
                   proc={proc}
-                  onCancelar={handleCancelamento}
+                  onCancelar={openModalCancelamento}
                 />
               ))
             ) : (
@@ -379,7 +411,7 @@ export default function DashboardVoluntario() {
                 <ProcedimentoDisponivelItem
                   key={proc.id}
                   proc={proc}
-                  onInscrever={handleInscricao}
+                  onInscrever={() => openModalConfirmacao(proc.id)}
                 />
               ))
             ) : (
@@ -412,6 +444,18 @@ export default function DashboardVoluntario() {
           </div>
         </section>
       </main>
+      <ConfirmacaoInscricao 
+        isOpen={showConfirmModal}
+        onClose={() => setShowConfirmModal(false)}
+        onConfirm={confirmInscricao}
+        proc={selectedProc}
+      />
+      <ConfirmacaoCancelamento
+        isOpen={showCancelModal}
+        onClose={() => setShowCancelModal(false)}
+        onConfirm={confirmCancelamento}
+        proc={selectedCancelProc}
+      />
     </div>
   );
 }
