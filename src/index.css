@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+/* Base clara e tipografia */
+@layer base {
+  html, body, #root {
+    margin: 0;
+    padding: 0;
+
+    height: 100%;
+    min-height: 100vh;
+    width: 100%;
+  }
+  body {
+    font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    background: #ffffff;
+    color: #002147;
+  }
+}
+
+@layer components {
+  .container-page { @apply w-full max-w-7xl mx-auto px-4; }
+
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 font-semibold transition;
+  }
+
+ 
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 font-semibold transition
+           text-white bg-[#0ea5e9] hover:bg-[#0284c7];
+  }
+
+  .btn-white {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 font-semibold transition
+           bg-white text-[#0f172a] hover:bg-slate-100;
+  }
+
+  .pill  { @apply rounded-xl px-4 py-2 text-sm font-medium; }
+  .card  { @apply rounded-2xl border border-slate-200 bg-white; }
+  .muted { @apply text-slate-600; }
+}
