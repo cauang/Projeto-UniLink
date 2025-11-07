@@ -1,15 +1,21 @@
 FROM node:18-alpine
 
+# Criar diretório da aplicação
 WORKDIR /app
 
-# Copiar apenas o package.json primeiro para aproveitar o cache do Docker
-COPY package*.json ./
+# Copiar arquivos do servidor
+COPY *.js ./
+COPY *.json ./
+COPY routes/ ./routes/
+COPY middleware/ ./middleware/
+COPY services/ ./services/
+COPY repositories/ ./repositories/
+COPY migrations/ ./migrations/
+COPY dev/ ./dev/
+COPY db/ ./db/
 
 # Instalar dependências
 RUN npm install
-
-# Copiar o resto dos arquivos
-COPY . .
 
 # Expor a porta que o app usa
 EXPOSE 8080
