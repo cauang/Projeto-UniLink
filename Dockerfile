@@ -13,6 +13,7 @@ COPY server/repositories/ ./repositories/
 COPY server/migrations/ ./migrations/
 COPY server/dev/ ./dev/
 COPY server/db/ ./db/
+COPY server/.env ./
 
 # Instalar dependências
 RUN npm install
