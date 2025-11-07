@@ -23,7 +23,7 @@ export default function Home() {
                 Faça a diferença agora mesmo!"
               </p>
               <div className="mt-6">
-                <Link to="/sobre" className="btn-white">PARTICIPAR</Link>
+                <Link to="/sobre" className="btn-white">Entrar</Link>
               </div>
               </div>
 
