@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+// 1. ADIÇÃO: Importar useNavigate para navegação programática
+import { Link, useNavigate } from "react-router-dom"; 
 import {
   Calendar,
   CheckCircle2,
@@ -23,11 +24,9 @@ import ConfirmacaoCancelamento from "./ConfirmacaoCancelamento";
 // --- Constantes ---
 const PRIMARY_BLUE = "#1E40FF";
 
-// --- Mock API Removida ---
-// A lógica da API agora vem de "./api/mock.js"
-
 // --- Componente Header ---
-const DashboardHeader = ({ profile }) => (
+// Mantenho a propriedade onCalendarClick
+const DashboardHeader = ({ profile, onCalendarClick }) => (
   <header
     className="w-full text-white p-6 rounded-b-lg shadow-md"
     style={{ backgroundColor: PRIMARY_BLUE }}
@@ -41,7 +40,12 @@ const DashboardHeader = ({ profile }) => (
         </p>
       </div>
       <div className="flex items-center gap-6">
-        <Calendar size={22} className="cursor-pointer hover:opacity-80" />
+        {/* APLICAR A FUNÇÃO DE CLIQUE AQUI */}
+        <Calendar 
+          size={22} 
+          className="cursor-pointer hover:opacity-80" 
+          onClick={onCalendarClick} // <--- NOVO ONCLICK
+        />
         <div className="relative">
           <Bell size={22} className="cursor-pointer hover:opacity-80" />
           <span className="absolute -top-2 -right-2 w-4 h-4 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
@@ -203,6 +207,16 @@ export default function DashboardVoluntario() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  // 2. ADIÇÃO: Inicializar hook de navegação
+  const navigate = useNavigate();
+
+  // 3. ADIÇÃO: Função de clique para o Calendário
+  const handleCalendarClick = () => {
+    // Redireciona para a rota '/calendario'
+    navigate("/calendario"); 
+  };
+
 
   const fetchData = async () => {
     setLoading(true);
@@ -329,7 +343,8 @@ export default function DashboardVoluntario() {
       <div className="min-h-screen bg-gray-100">
         {/* Mesmo com erro, tentamos mostrar o header se o profile carregou */}
         {profile ? (
-          <DashboardHeader profile={profile} />
+          // CORRIGIDO: Passar a função de calendário no caso de erro (se o profile carregou)
+          <DashboardHeader profile={profile} onCalendarClick={handleCalendarClick} />
         ) : (
           <header
             className="w-full text-white p-6 rounded-b-lg shadow-md"
@@ -350,7 +365,8 @@ export default function DashboardVoluntario() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <DashboardHeader profile={profile} />
+      {/* 4. PASSAR A FUNÇÃO PARA O HEADER NO RENDER NORMAL */}
+      <DashboardHeader profile={profile} onCalendarClick={handleCalendarClick} />
 
       <main className="p-6 md:p-10 max-w-7xl mx-auto">
         {/* Seção de Resumo */}

@@ -11,6 +11,7 @@ import DetalhesProcedimento from "./pages/DetalhesProcedimento.jsx";
 // CORREÇÃO 1: Mude o nome da importação para começar com maiúscula (boa prática do React)
 import Perfil from "./pages/perfil.jsx";
 import Admin from "./pages/Admin.jsx";
+import Calendario from "./pages/Calendario.jsx"
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
         <Route path="/sobre" element={<Sobre />} />
         <Route path="/voluntarios" element={<DashboardVoluntario />} />
         <Route path="/procedimento/:id" element={<DetalhesProcedimento />} />
+        <Route path="/calendario" element={<Calendario />} />
         
         {/* CORREÇÃO 2: Use o nome da importação com maiúscula e como um elemento JSX <Perfil /> */}
         <Route path="/perfil" element={<Perfil />} />
