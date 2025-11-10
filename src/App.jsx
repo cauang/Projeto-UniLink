@@ -9,7 +9,7 @@ import { Cadastro } from "./pages/cadastro.jsx";
 import DashboardVoluntario from "./pages/DashboardVoluntario.jsx";
 import DetalhesProcedimento from "./pages/DetalhesProcedimento.jsx";
 // CORREÇÃO 1: Mude o nome da importação para começar com maiúscula (boa prática do React)
-import Perfil from "./pages/Perfil.jsx"; 
+import Perfil from "./pages/perfil.jsx";
 import Admin from "./pages/Admin.jsx";
 
 export default function App() {

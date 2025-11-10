@@ -248,21 +248,21 @@ const Perfil = () => {
         <div className="container mx-auto px-4 max-w-7xl flex justify-between items-center">
             {/* Voltar ao Dashboard - Ícone e Texto Brancos */}
             <Link
-                to="/dashboard"
+                to="/voluntarios" 
                 className="flex items-center text-white hover:text-gray-200 transition text-sm font-medium"
                 onClick={(e) => {
                   e.preventDefault(); 
                   if (window.history.length > 1) {
-                    navigate(-1);
+                    navigate(-1); // Tenta voltar na história (se existir)
                   } else {
-                    navigate("/dashboard");
+                    // FALLBACK: Se não houver histórico, navegue para a rota correta
+                    navigate("/voluntarios");
                   }
                 }}
             >
                 <ArrowLeft size={18} className="mr-2" />
                 Voltar ao Dashboard
             </Link>
-
             {/* Ícones de Notificação e Perfil no Header */}
             <div className="flex items-center space-x-4">
                 <Bell size={24} className="text-white hover:text-gray-200 cursor-pointer relative">
