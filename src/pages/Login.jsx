@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ChevronLeft, Eye, EyeOff } from "lucide-react";
 import { toast } from "react-hot-toast";
-//import api from "../api/http";
+import api from "../api/http";
 // import useAuth from "../store/useAuth"; // Removido para evitar erro de importação
 
 // --- Mock API para fins de demonstração ---
@@ -44,7 +44,7 @@ const mockApi = {
 
 // --- PONTO PRINCIPAL PARA TESTES ---
 // Para USAR a simulação (mock), deixe esta linha ATIVA:
-const api = mockApi;
+//const api = mockApi;
 
 // Para USAR sua API real, comente a linha acima (const api = mockApi;)
 // e descomente a linha de importação no topo (import api from "../api/http";)
