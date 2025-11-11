@@ -91,11 +91,14 @@ export default function Cadastro() {
       // The register endpoint currently returns inserted id; if it returns a token,
       // setToken below will work. Otherwise keep the success message and redirect
       // to login/dashboard as appropriate.
+      // After successful registration, redirect user to the login page
+      // (do NOT automatically sign in).
       if (response.data.token) {
-        setToken(response.data.token);
+        // If backend unexpectedly returns a token, do not auto-login; ignore it.
+        console.warn('Register returned token; ignoring auto-login for security');
       }
-      toast.success("Cadastro realizado com sucesso!");
-      navigate("/dashboard");
+      toast.success("Cadastro realizado com sucesso! Faça login para continuar.");
+      navigate("/login");
     } catch (error) {
       console.error(error);
       toast.error(error.response?.data?.message || "Erro ao fazer cadastro");

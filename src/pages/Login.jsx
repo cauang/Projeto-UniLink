@@ -33,8 +33,18 @@ export default function LoginSplit() {
       setAuth(token, user);
       toast.success("Login realizado com sucesso!");
 
-      // Sempre redirecionar para o dashboard independentemente do tipo de usuário
-      navigate("/dashboard");
+      // Redirecionar baseado no tipo de usuário retornado pelo backend
+      // Adiciona logs temporários para diagnóstico e faz checagem mais tolerante
+      console.log('Login response user:', user);
+      const tipo = (user?.tipo_usuario || '').toString().toLowerCase();
+      console.log('Normalized tipo_usuario:', tipo);
+
+      if (tipo.includes('estud')) {
+        navigate('/dashboard-estudante');
+      } else {
+        // Caso contrario, segue para o dashboard padrão (voluntário)
+        navigate('/dashboard');
+      }
     } catch (error) {
       console.error(error);
       toast.error(error.response?.data?.message || "Erro ao fazer login");

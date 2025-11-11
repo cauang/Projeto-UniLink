@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import api from "../api/http.js";
 import { toast } from 'react-hot-toast';
+import CalendarWidget from '../components/CalendarWidget';
 
 // --- Constantes ---
 const PRIMARY_BLUE = "#1E40FF";
@@ -26,7 +27,7 @@ const PRIMARY_BLUE = "#1E40FF";
 // As chamadas usam o cliente HTTP em "../api/http.js" apontando para o backend
 
 // --- Componente Header ---
-const DashboardHeader = ({ profile }) => (
+const DashboardHeader = ({ profile, onOpenCalendar }) => (
   <header
     className="w-full text-white p-6 rounded-b-lg shadow-md"
     style={{ backgroundColor: PRIMARY_BLUE }}
@@ -40,7 +41,7 @@ const DashboardHeader = ({ profile }) => (
         </p>
       </div>
       <div className="flex items-center gap-6">
-        <Calendar size={22} className="cursor-pointer hover:opacity-80" />
+        <button onClick={onOpenCalendar} className="p-0"><Calendar size={22} className="cursor-pointer hover:opacity-80" /></button>
         <div className="relative">
           <Bell size={22} className="cursor-pointer hover:opacity-80" />
           <span className="absolute -top-2 -right-2 w-4 h-4 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
@@ -190,6 +191,9 @@ const ErrorDisplay = ({ message }) => (
 
 // --- Componente Principal ---
 export default function DashboardVoluntario() {
+  const [showCalendar, setShowCalendar] = useState(false);
+  const openCalendar = () => setShowCalendar(true);
+  const closeCalendar = () => setShowCalendar(false);
   const [profile, setProfile] = useState(null);
   const [summary, setSummary] = useState(null);
   const [inscricoes, setInscricoes] = useState([]);
@@ -355,7 +359,8 @@ export default function DashboardVoluntario() {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <DashboardHeader profile={profile} />
+      <DashboardHeader profile={profile} onOpenCalendar={openCalendar} />
+      <CalendarWidget visible={showCalendar} onClose={closeCalendar} events={[...inscricoes, ...disponiveis, ...historico].map(i=>({date:i.data, title:i.titulo}))} />
 
       <main className="p-6 md:p-10 max-w-7xl mx-auto">
         {/* Seção de Resumo */}

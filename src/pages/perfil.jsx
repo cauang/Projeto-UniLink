@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import api from '../api/http';
+import { toast } from 'react-hot-toast';
+import CalendarWidget from '../components/CalendarWidget';
 import { Link } from "react-router-dom";
 import useAuth from "../store/useAuth";
 import {
@@ -41,7 +44,7 @@ const statsFallback = {
 // --- FIM DOS DADOS ESTÁTICOS ---
 
 // --- Componente Header ---
-const PerfilHeader = () => (
+const PerfilHeader = ({ onOpenCalendar }) => (
   <header
     className="w-full text-white p-6 rounded-b-lg shadow-md"
     style={{ backgroundColor: PRIMARY_BLUE }}
@@ -61,7 +64,7 @@ const PerfilHeader = () => (
         </p>
       </div>
       <div className="flex items-center gap-6">
-        <Calendar size={22} className="cursor-pointer hover:opacity-80" />
+        <button onClick={onOpenCalendar} className="p-0"><Calendar size={22} className="cursor-pointer hover:opacity-80" /></button>
         <div className="relative">
           <Bell size={22} className="cursor-pointer hover:opacity-80" />
           <span className="absolute -top-2 -right-2 w-4 h-4 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
@@ -327,9 +330,34 @@ const PlaceholderContent = ({ tab }) => (
 // --- Componente Principal ---
 export default function Perfil() {
   const [activeTab, setActiveTab] = useState("Informações");
+  const [showCalendar, setShowCalendar] = useState(false);
+  const openCalendar = () => setShowCalendar(true);
+  const closeCalendar = () => setShowCalendar(false);
+  const [calendarEvents, setCalendarEvents] = useState([]);
+  const fetchAndOpenCalendar = async () => {
+    try {
+      const tipo = (user?.tipo_usuario || user?.tipo || '').toString().toLowerCase();
+      let res;
+      if (tipo.includes('estud')) {
+        res = await api.get('/procedimentos/meus-procedimentos');
+      } else {
+        res = await api.get('/procedimentos/meus-agendados');
+      }
+      const rows = res?.data || [];
+      const ev = rows.map(r => ({ date: r.data || r.date, title: r.titulo || r.nome || r.title || 'Procedimento' }));
+      setCalendarEvents(ev);
+      setShowCalendar(true);
+    } catch (err) {
+      console.error('Erro ao carregar procedimentos do usuário', err);
+      toast.error('Não foi possível carregar o calendário');
+    }
+  };
 
   // Pegar o usuário logado do store (setado no login)
   const user = useAuth((state) => state.user);
+
+  // Local state for real procedimentos count
+  const [localProcedimentosCount, setLocalProcedimentosCount] = useState(user?.procedimentos || statsFallback.procedimentos);
 
   // Construir o objeto de profile que o componente espera, com fallback
   const profile = {
@@ -347,14 +375,38 @@ export default function Perfil() {
   };
 
   const stats = {
-    procedimentos: user?.procedimentos || statsFallback.procedimentos,
+    procedimentos: localProcedimentosCount,
     pontos: user?.pontos || statsFallback.pontos,
     avaliacao: user?.avaliacao || statsFallback.avaliacao,
   };
 
+  // Load real counts for procedimentos when the profile mounts
+  useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      try {
+        const tipo = (user?.tipo_usuario || user?.tipo || '').toString().toLowerCase();
+        let res;
+        if (tipo.includes('estud')) {
+          res = await api.get('/procedimentos/meus-procedimentos');
+        } else {
+          res = await api.get('/procedimentos/meus-agendados');
+        }
+        if (!mounted) return;
+        const count = Array.isArray(res?.data) ? res.data.length : 0;
+        setLocalProcedimentosCount(count);
+      } catch (err) {
+        console.error('Erro ao buscar procedimentos para perfil', err);
+      }
+    };
+    load();
+    return () => { mounted = false; };
+  }, [user]);
+
   return (
     <div className="min-h-screen bg-gray-100">
-      <PerfilHeader />
+  <PerfilHeader onOpenCalendar={fetchAndOpenCalendar} />
+  <CalendarWidget visible={showCalendar} onClose={closeCalendar} events={calendarEvents} />
       {/* CORREÇÃO: Adicionado 'relative z-10' para garantir que o 'main'
           fique "em cima" do header e possa receber cliques. */}
       <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 relative z-10">
