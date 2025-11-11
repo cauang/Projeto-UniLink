@@ -120,6 +120,12 @@ export default function Cadastro() {
     "Engenharia Química",
     "Engenharia de Produção",
     "Farmácia",
+    "Enfermagem",
+    "Fisioterapia",
+    "Nutrição",
+    "Odontologia",
+    "Publicidade e Propaganda",
+    "Relações Internacionais",    
     "Veterinária"
   ];
   const semestres = Array.from({ length: 12 }, (_, i) => i + 1);
