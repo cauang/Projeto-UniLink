@@ -48,7 +48,8 @@ router.post('/register', async (req, res) => {
 
     const hash = await bcrypt.hash(senha, 10);
     try {
-      const inserted = await createUser({ nome, curso, matricula, email, telefone, senha: hash, semestre, biografia });
+      // Ensure default tipo_usuario is 'Voluntario' when not provided
+      const inserted = await createUser({ nome, curso, matricula, email, telefone, senha: hash, semestre, tipo_usuario: 'Voluntario', biografia });
       // Send success and return immediately to avoid later error handling trying to send another response
       return res.status(201).json({ message: 'Usuário cadastrado com sucesso', id_usuario: inserted.id_usuario });
     } catch (insertError) {
@@ -81,15 +82,22 @@ router.post('/login', async (req, res) => {
     const senhaCorreta = await bcrypt.compare(senha, user.senha);
     if (!senhaCorreta) return res.status(401).json({ message: 'Matrícula ou senha incorreta' });
 
-    // Verifica se o usuário é estudante ou voluntário baseado na tabela inscricoes
-    let tipo = 'Estudante';
-    try {
-      tipo = (await isVoluntarioByUserId(user.id_usuario)) ? 'Voluntario' : 'Estudante';
-    } catch (volErr) {
-      // Log and continue as Estudante if the check fails
-      console.error('Erro ao checar voluntario:', volErr && volErr.message ? volErr.message : volErr);
-      tipo = 'Estudante';
+    // Determina o tipo do usuário. Prioriza o valor armazenado em `usuario.tipo_usuario`
+    // se existir; caso contrário, usa a presença em `inscricoes` como fallback.
+    let tipo = null;
+    if (user.tipo_usuario) {
+      tipo = String(user.tipo_usuario);
+    } else {
+      try {
+        tipo = (await isVoluntarioByUserId(user.id_usuario)) ? 'Voluntario' : 'Estudante';
+      } catch (volErr) {
+        // Log and continue with a safe default
+        console.error('Erro ao checar voluntario:', volErr && volErr.message ? volErr.message : volErr);
+        tipo = 'Estudante';
+      }
     }
+    // Normaliza para valores esperados
+    tipo = tipo && tipo.toString().toLowerCase().includes('volunt') ? 'Voluntario' : 'Estudante';
     const token = jwt.sign({
       id: user.id_usuario,
       matricula: user.matricula,
@@ -102,8 +110,33 @@ router.post('/login', async (req, res) => {
 
     // Remove a senha antes de enviar os dados do usuário
     delete user.senha;
-    
-    res.json({ 
+
+    // Log de login (sem expor senha) para diagnóstico
+    try {
+      // Usa JSON.stringify para garantir que todo o objeto seja exibido no console
+      const loginInfo = {
+        id_usuario: user.id_usuario,
+        matricula: user.matricula,
+        nome: user.nome,
+        email: user.email,
+        tipo_usuario: tipo,
+        timestamp: new Date().toISOString(),
+      };
+      console.log('User login: ' + JSON.stringify(loginInfo, null, 2));
+    } catch (logErr) {
+      // não quebra a resposta se o log falhar
+      console.error('Erro ao logar informação de login:', logErr);
+    }
+
+    // Atualiza o campo ultimo_login no banco no formato brasileiro (DD/MM/YYYY HH24:MI:SS)
+    try {
+      await pool.query("UPDATE unilink.usuario SET ultimo_login = to_char(NOW(), 'DD/MM/YYYY HH24:MI:SS') WHERE id_usuario = $1", [user.id_usuario]);
+    } catch (upErr) {
+      console.error('Erro ao atualizar ultimo_login:', upErr && upErr.message ? upErr.message : upErr);
+      // Não interrompe o login se falhar ao gravar o timestamp
+    }
+
+    res.json({
       token,
       user: {
         ...user,

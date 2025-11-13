@@ -4,15 +4,15 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Copiar arquivos do servidor
-COPY *.js ./
-COPY *.json ./
-COPY routes/ ./routes/
-COPY middleware/ ./middleware/
-COPY services/ ./services/
-COPY repositories/ ./repositories/
-COPY migrations/ ./migrations/
-COPY dev/ ./dev/
-COPY db/ ./db/
+COPY server/*.js ./
+COPY server/*.json ./
+COPY server/routes/ ./routes/
+COPY server/middleware/ ./middleware/
+COPY server/services/ ./services/
+COPY server/repositories/ ./repositories/
+COPY server/migrations/ ./migrations/
+COPY server/dev/ ./dev/
+COPY server/db/ ./db/
 
 # Instalar dependências
 RUN npm install

@@ -18,15 +18,22 @@ import {
 } from "lucide-react";
 import api from "../api/http.js";
 import { toast } from 'react-hot-toast';
+import { formatarHorario } from "../utils/formatters";
+import CalendarWidget from '../components/CalendarWidget';
+
+// --- Imports dos Modais (NOVO) ---
+import ModalConfirmarInscricao from './ConfirmacaoInscricao'; // Ajuste o caminho se necessário
+import ConfirmacaoCancelamento from './ConfirmacaoCancelamento.jsx'; // Ajuste o caminho se necessário
 
 // --- Constantes ---
 const PRIMARY_BLUE = "#1E40FF";
 
 // --- Conexão com API real ---
-// As chamadas usam o cliente HTTP em "../api/http.js" apontando para o backend
+// (Sem alterações)
 
 // --- Componente Header ---
-const DashboardHeader = ({ profile }) => (
+const DashboardHeader = ({ profile, onOpenCalendar }) => (
+  // (Sem alterações)
   <header
     className="w-full text-white p-6 rounded-b-lg shadow-md"
     style={{ backgroundColor: PRIMARY_BLUE }}
@@ -40,7 +47,7 @@ const DashboardHeader = ({ profile }) => (
         </p>
       </div>
       <div className="flex items-center gap-6">
-        <Calendar size={22} className="cursor-pointer hover:opacity-80" />
+        <button onClick={onOpenCalendar} className="p-0"><Calendar size={22} className="cursor-pointer hover:opacity-80" /></button>
         <div className="relative">
           <Bell size={22} className="cursor-pointer hover:opacity-80" />
           <span className="absolute -top-2 -right-2 w-4 h-4 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
@@ -61,6 +68,7 @@ const DashboardHeader = ({ profile }) => (
 
 // --- Componentes dos Cards ---
 const ResumoCard = ({ icon, title, value, color }) => (
+  // (Sem alterações)
   <div
     className="bg-white p-6 rounded-lg shadow border border-gray-200 flex items-center justify-between"
   >
@@ -74,6 +82,7 @@ const ResumoCard = ({ icon, title, value, color }) => (
 
 // Card para "Minhas Inscrições"
 const ProcedimentoInscritoItem = ({ proc, onCancelar }) => (
+  // (Sem alterações no JSX, apenas a lógica do onCancelar vai mudar na implementação)
   <div
     className="bg-blue-50 p-6 rounded-lg shadow border border-blue-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
   >
@@ -86,7 +95,7 @@ const ProcedimentoInscritoItem = ({ proc, onCancelar }) => (
           <CalendarDays className="h-5 w-5" /> {proc.data}
         </span>
         <span className="flex items-center gap-2">
-          <Clock className="h-5 w-5" /> {proc.horario} ({proc.duracao})
+          <Clock className="h-5 w-5" /> {formatarHorario(proc.horario)} ({proc.duracao})
         </span>
         <span className="flex items-center gap-2">
           <MapPin className="h-5 w-5" /> {proc.local}
@@ -106,7 +115,7 @@ const ProcedimentoInscritoItem = ({ proc, onCancelar }) => (
         Ver Detalhes
       </Link>
       <button
-        onClick={() => onCancelar(proc.id)}
+        onClick={() => onCancelar(proc.id)} // A função onCancelar agora abre o modal
         className="px-4 py-2 text-sm text-center font-semibold text-red-600 bg-white border border-red-300 rounded-lg hover:bg-gray-50"
       >
         Cancelar
@@ -117,6 +126,7 @@ const ProcedimentoInscritoItem = ({ proc, onCancelar }) => (
 
 // Card para "Disponíveis"
 const ProcedimentoDisponivelItem = ({ proc, onInscrever }) => (
+  // (Sem alterações no JSX, apenas a lógica do onInscrever vai mudar na implementação)
   <div
     className="bg-white p-6 rounded-lg shadow border border-gray-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
   >
@@ -129,7 +139,7 @@ const ProcedimentoDisponivelItem = ({ proc, onInscrever }) => (
           <CalendarDays className="h-5 w-5" /> {proc.data}
         </span>
         <span className="flex items-center gap-2">
-          <Clock className="h-5 w-5" /> {proc.horario} ({proc.duracao})
+          <Clock className="h-5 w-5" /> {formatarHorario(proc.horario)} ({proc.duracao})
         </span>
         <span className="flex items-center gap-2">
           <MapPin className="h-5 w-5" /> {proc.local}
@@ -143,7 +153,7 @@ const ProcedimentoDisponivelItem = ({ proc, onInscrever }) => (
         {proc.status}
       </span>
       <button
-        onClick={() => onInscrever(proc.id)}
+        onClick={() => onInscrever(proc.id)} // A função onInscrever agora abre o modal
         className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 border border-blue-600 rounded-lg hover:bg-blue-700"
       >
         Inscrever-se
@@ -154,6 +164,7 @@ const ProcedimentoDisponivelItem = ({ proc, onInscrever }) => (
 
 // Card para "Histórico"
 const HistoricoItem = ({ proc }) => (
+  // (Sem alterações)
   <div
     className="bg-white p-4 rounded-lg shadow border border-gray-200 flex items-center justify-between"
   >
@@ -172,12 +183,14 @@ const HistoricoItem = ({ proc }) => (
 
 // Componente de Loading/Erro
 const LoadingSpinner = () => (
+  // (Sem alterações)
   <div className="flex justify-center items-center py-20">
     <Loader2 size={48} className="animate-spin text-blue-600" />
   </div>
 );
 
 const ErrorDisplay = ({ message }) => (
+  // (Sem alterações)
   <div className="flex justify-center items-center py-20 px-6">
     <div className="flex items-center gap-3 p-4 bg-red-100 border border-red-300 rounded-lg text-red-700">
       <AlertTriangle size={24} />
@@ -190,6 +203,9 @@ const ErrorDisplay = ({ message }) => (
 
 // --- Componente Principal ---
 export default function DashboardVoluntario() {
+  const [showCalendar, setShowCalendar] = useState(false);
+  const openCalendar = () => setShowCalendar(true);
+  const closeCalendar = () => setShowCalendar(false);
   const [profile, setProfile] = useState(null);
   const [summary, setSummary] = useState(null);
   const [inscricoes, setInscricoes] = useState([]);
@@ -199,7 +215,13 @@ export default function DashboardVoluntario() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // --- Estados de Controle dos Modais (NOVO) ---
+  const [modalInscricaoOpen, setModalInscricaoOpen] = useState(false);
+  const [modalCancelamentoOpen, setModalCancelamentoOpen] = useState(false);
+  const [procSelecionado, setProcSelecionado] = useState(null); // Guarda o 'proc' para o modal
+
   const fetchData = async () => {
+    // (Sem alterações na lógica de fetch)
     setLoading(true);
     setError(null);
     try {
@@ -227,7 +249,7 @@ export default function DashboardVoluntario() {
           telefone: row.estudante_telefone || (row.estudante && row.estudante.telefone) || null,
           semestre: row.estudante_semestre || (row.estudante && row.estudante.semestre) || null,
         };
-        const data = row.data ? (typeof row.data === 'string' ? row.data : new Date(row.data).toLocaleDateString()) : (row.date || null);
+        const data = row.data ? (typeof row.data === 'string' ? row.data.split('T')[0] : new Date(row.data).toISOString().split('T')[0]) : (row.date || null);
         const horario = row.horario || row.time || null;
         const duracao = row.duracao || row.duration || null;
         const local = row.local || row.localizacao || row.location || null;
@@ -270,7 +292,8 @@ export default function DashboardVoluntario() {
     fetchData();
   }, []);
 
-  // --- Funções de Inscrição/Cancelamento (Simuladas) ---
+  // --- Funções de Inscrição/Cancelamento (LÓGICA PRINCIPAL) ---
+  // Essas funções não mudam, pois contêm a lógica de API
   const handleInscricao = async (id) => {
     // 1. Otimistamente, atualiza a UI
     const proc = disponiveis.find((p) => p.id === id);
@@ -309,6 +332,63 @@ export default function DashboardVoluntario() {
     }
   };
 
+  
+  // --- Funções de Controle dos Modais (NOVO) ---
+
+  // Abre o modal de INSCRIÇÃO e define o procedimento selecionado
+  const onAbrirModalInscricao = (id) => {
+    console.log('[Dashboard] onAbrirModalInscricao id=', id, 'disponiveis.count=', disponiveis.length);
+    const proc = disponiveis.find((p) => p.id === id || String(p.id) === String(id));
+    if (proc) {
+      console.log('[Dashboard] proc encontrado:', proc);
+      setProcSelecionado(proc);
+      setModalInscricaoOpen(true);
+    } else {
+      console.warn('[Dashboard] proc NÃO encontrado para id=', id);
+    }
+  };
+
+  // Abre o modal de CANCELAMENTO e define o procedimento selecionado
+  const onAbrirModalCancelamento = (id) => {
+    console.log('[Dashboard] onAbrirModalCancelamento id=', id, 'inscricoes.count=', inscricoes.length);
+    const proc = inscricoes.find((p) => p.id === id || String(p.id) === String(id));
+    if (proc) {
+      console.log('[Dashboard] proc encontrado para cancelamento:', proc);
+      setProcSelecionado(proc);
+      setModalCancelamentoOpen(true);
+    } else {
+      console.warn('[Dashboard] proc NÃO encontrado para cancelamento id=', id);
+    }
+  };
+
+  // Fecha todos os modais e limpa a seleção
+  const onFecharModais = () => {
+    console.log('[Dashboard] onFecharModais');
+    setModalInscricaoOpen(false);
+    setModalCancelamentoOpen(false);
+    setProcSelecionado(null);
+  };
+
+  // Chamado quando o usuário CONFIRMA a inscrição no modal
+  const onConfirmarInscricao = () => {
+    console.log('[Dashboard] onConfirmarInscricao procSelecionado=', procSelecionado);
+    if (procSelecionado) {
+      handleInscricao(procSelecionado.id); // Chama a lógica de API
+    }
+    onFecharModais(); // Fecha o modal
+  };
+
+  // Chamado quando o usuário CONFIRMA o cancelamento no modal
+  const onConfirmarCancelamento = () => {
+    console.log('[Dashboard] onConfirmarCancelamento procSelecionado=', procSelecionado);
+    if (procSelecionado) {
+      handleCancelamento(procSelecionado.id); // Chama a lógica de API
+    }
+    onFecharModais(); // Fecha o modal
+  };
+
+
+  // --- Renderização de Loading e Erro (Sem alterações) ---
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-100">
@@ -353,12 +433,14 @@ export default function DashboardVoluntario() {
     );
   }
 
+  // --- Renderização Principal ---
   return (
     <div className="min-h-screen bg-gray-100">
-      <DashboardHeader profile={profile} />
+      <DashboardHeader profile={profile} onOpenCalendar={openCalendar} />
+      <CalendarWidget visible={showCalendar} onClose={closeCalendar} events={[...inscricoes, ...disponiveis, ...historico].map(i=>({date:i.data, title:i.titulo}))} />
 
       <main className="p-6 md:p-10 max-w-7xl mx-auto">
-        {/* Seção de Resumo */}
+        {/* Seção de Resumo (Sem alterações) */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           <ResumoCard
             icon={<Calendar className="h-6 w-6 text-blue-600" />}
@@ -380,7 +462,7 @@ export default function DashboardVoluntario() {
           />
         </section>
 
-        {/* Seção "Minhas Inscrições" */}
+        {/* Seção "Minhas Inscrições" (ALTERADO) */}
         <section className="mb-10">
           <h2 className="text-2xl font-semibold text-gray-800 mb-2">
             Minhas Inscrições
@@ -394,7 +476,7 @@ export default function DashboardVoluntario() {
                 <ProcedimentoInscritoItem
                   key={proc.id}
                   proc={proc}
-                  onCancelar={handleCancelamento}
+                  onCancelar={onAbrirModalCancelamento} // ALTERADO
                 />
               ))
             ) : (
@@ -405,7 +487,7 @@ export default function DashboardVoluntario() {
           </div>
         </section>
 
-        {/* Seção "Procedimentos Disponíveis" */}
+        {/* Seção "Procedimentos Disponíveis" (ALTERADO) */}
         <section className="mb-10">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">
             Procedimentos Disponíveis
@@ -416,7 +498,7 @@ export default function DashboardVoluntario() {
                 <ProcedimentoDisponivelItem
                   key={proc.id}
                   proc={proc}
-                  onInscrever={handleInscricao}
+                  onInscrever={onAbrirModalInscricao} // ALTERADO
                 />
               ))
             ) : (
@@ -427,7 +509,7 @@ export default function DashboardVoluntario() {
           </div>
         </section>
 
-        {/* Seção de Histórico */}
+        {/* Seção de Histórico (Sem alterações) */}
         <section>
           <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
             <History className="h-6 w-6" />
@@ -449,6 +531,24 @@ export default function DashboardVoluntario() {
           </div>
         </section>
       </main>
+
+      {/* --- Renderização dos Modais (NOVO) --- */}
+      {/* Eles ficam "escutando" os estados de visibilidade */}
+      
+      <ModalConfirmarInscricao
+        isOpen={modalInscricaoOpen}
+        onClose={onFecharModais}
+        onConfirm={onConfirmarInscricao}
+        proc={procSelecionado}
+      />
+      
+      <ConfirmacaoCancelamento
+        isOpen={modalCancelamentoOpen}
+        onClose={onFecharModais}
+        onConfirm={onConfirmarCancelamento}
+        proc={procSelecionado}
+      />
+
     </div>
   );
 }

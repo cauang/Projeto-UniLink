@@ -1,12 +1,10 @@
 const formatarData = (dataString) => {
   if (!dataString) return '';
   const data = new Date(dataString);
-  return new Intl.DateTimeFormat('pt-BR', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric'
-  }).format(data);
+  const year = data.getFullYear();
+  const month = String(data.getMonth() + 1).padStart(2, '0');
+  const day = String(data.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 };
 
 const formatarHorario = (horarioString) => {

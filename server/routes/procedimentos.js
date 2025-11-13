@@ -78,6 +78,29 @@ router.get('/historico', authMiddleware, async (req, res) => {
   }
 });
 
+// Buscar procedimentos criados pelo estudante logado
+router.get('/meus-procedimentos', authMiddleware, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT 
+        p.*,
+        u.nome as estudante_nome,
+        u.email as estudante_email,
+        u.telefone as estudante_telefone,
+        u.semestre as estudante_semestre
+       FROM unilink.procedimentos p
+       JOIN unilink.usuario u ON p.estudante_id = u.id_usuario
+       WHERE p.estudante_id = $1
+       ORDER BY p.data DESC`,
+      [req.userId]
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Erro ao buscar meus procedimentos:', err);
+    res.status(500).json({ message: 'Erro ao buscar meus procedimentos' });
+  }
+});
+
 // Buscar detalhes de um procedimento específico
 router.get('/:id', authMiddleware, async (req, res) => {
   try {
@@ -88,12 +111,19 @@ router.get('/:id', authMiddleware, async (req, res) => {
         u.email as estudante_email,
         u.telefone as estudante_telefone,
         u.semestre as estudante_semestre,
-        i.status as inscricao_status
+        u.matricula as estudante_matricula,
+        i.status as inscricao_status,
+        v.id_usuario as voluntario_id,
+        v.nome as voluntario_nome,
+        v.email as voluntario_email,
+        v.telefone as voluntario_telefone,
+        v.matricula as voluntario_matricula
        FROM unilink.procedimentos p
        JOIN unilink.usuario u ON p.estudante_id = u.id_usuario
-       LEFT JOIN unilink.inscricoes i ON p.id = i.procedimento_id AND i.voluntario_id = $1
-       WHERE p.id = $2`,
-      [req.userId, req.params.id]
+       LEFT JOIN unilink.inscricoes i ON p.id = i.procedimento_id AND i.status = 'confirmado'
+       LEFT JOIN unilink.usuario v ON i.voluntario_id = v.id_usuario
+       WHERE p.id = $1`,
+      [req.params.id]
     );
     
     if (result.rows.length === 0) {
@@ -157,6 +187,35 @@ router.post('/inscrever', authMiddleware, async (req, res) => {
     await pool.query('ROLLBACK');
     console.error('Erro ao realizar inscrição:', err);
     res.status(500).json({ message: 'Erro ao realizar inscrição' });
+  }
+});
+
+// Criar um novo procedimento (solicitação) pelo estudante logado
+router.post('/', authMiddleware, async (req, res) => {
+  const {
+    titulo,
+    descricao,
+    requisitos,
+    observacoes,
+    data,
+    horario,
+    duracao,
+    local,
+    equipamentos,
+  } = req.body;
+
+  try {
+    const result = await pool.query(
+      `INSERT INTO unilink.procedimentos (titulo, descricao, requisitos, observacoes, data, horario, duracao, local, equipamentos, status, estudante_id, created_at, updated_at)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9::jsonb,$10,$11,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)
+       RETURNING *`,
+      [titulo, descricao, requisitos, observacoes, data, horario, duracao, local, JSON.stringify(equipamentos || []), 'disponivel', req.userId]
+    );
+
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error('Erro ao criar procedimento:', err);
+    res.status(500).json({ message: 'Erro ao criar procedimento' });
   }
 });
 

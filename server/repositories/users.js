@@ -23,7 +23,8 @@ export async function createUser({ nome, curso, matricula, email, telefone, senh
   const res = await pool.query(
     `INSERT INTO unilink.usuario (nome, curso, matricula, email, telefone, senha, semestre, tipo_usuario, biografia, horas_complementares, avaliacao)
      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 0, 0.00) RETURNING id_usuario`,
-    [nome, curso, matricula, email, telefone, senha, semestre, (tipo_usuario || 'Estudante'), biografia]
+    // Do not force a default tipo_usuario here — keep null if caller didn't provide it
+    [nome, curso, matricula, email, telefone, senha, semestre, (tipo_usuario ?? null), biografia]
   );
   return res.rows[0];
 }
