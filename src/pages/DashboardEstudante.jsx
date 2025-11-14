@@ -42,14 +42,11 @@ export default function DashboardEstudante() {
     fetchProcedimentos();
   }, [navigate, user]);
 
-  // Header interactions
   const [showCalendar, setShowCalendar] = useState(false);
   const openCalendar = () => setShowCalendar(true);
   const closeCalendar = () => setShowCalendar(false);
 
   const openNotifications = () => {
-    // If you have a notifications page, navigate to it. For now, show toast.
-    // navigate('/notificacoes');
     toast('Notificações — funcionalidade em desenvolvimento');
   };
 
@@ -57,13 +54,10 @@ export default function DashboardEstudante() {
     navigate('/perfil');
   };
 
-  // resumo
-  // Backend may use 'confirmado' or 'agendado' for scheduled procedures — count both
   const agendados = procedimentos.filter((p) => {
     const s = (p.status || "").toLowerCase();
     return s === "confirmado" || s === "agendado";
   }).length;
-  // Aguardando pode aparecer como 'disponivel' or contain 'aguard'/'pend'
   const aguardando = procedimentos.filter((p) => {
     const s = (p.status || "").toLowerCase();
     return s === 'disponivel' || s.includes("aguard") || s.includes("pend");

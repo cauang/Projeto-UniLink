@@ -17,7 +17,7 @@ import {
   CalendarPlus
 } from 'lucide-react';
 
-// Header (recebe prop `to` para onde o botão "Voltar" aponta)
+// Header 
 const DetalhesHeader = ({ to = '/dashboard', onOpenCalendar }) => (
   <header className="bg-[#1E40FF] text-white shadow-md">
     <div className="max-w-7xl mx-auto flex items-center justify-between h-36 px-6 md:px-10">
@@ -45,7 +45,7 @@ const DetalhesHeader = ({ to = '/dashboard', onOpenCalendar }) => (
   </header>
 );
 
-// Generic person card (Voluntário / Estudante) — recebe dados via props
+// Generic person card  — recebe dados via props
 const PersonCard = ({ person, role = 'Voluntário' }) => {
   const nome = person?.voluntario_nome || person?.estudante_nome || person?.nome || '—';
   const curso = person?.curso || person?.estudante_semestre || person?.semestre || '';
@@ -83,11 +83,11 @@ const PersonCard = ({ person, role = 'Voluntário' }) => {
   );
 };
 
-// Card de Ações (recebe handlers via props)
+// Card de Ações 
 const AcoesCard = ({ procedimento, onAddCalendar, onSendMessage, onCancel, onInscrever, onCancelSolicitacao, isStudent = false, currentUser = {} }) => {
   const status = (procedimento?.status || '').toLowerCase();
   const inscricaoStatus = procedimento?.inscricao_status || procedimento?.inscricao || '';
-  // detecta se o usuário atual é o criador/solicitante (tenta várias chaves possíveis)
+  // detecta se o usuário atual é o criador/solicitante 
   const userId = currentUser?.id_usuario || currentUser?.id || currentUser?.usuario_id || currentUser?.idUser;
   const ownerId = procedimento?.estudante_id || procedimento?.estudante || procedimento?.estudante_usuario_id || procedimento?.usuario_id || procedimento?.id_usuario;
   const isOwner = String(userId) && String(ownerId) && String(userId) === String(ownerId);
@@ -120,7 +120,7 @@ const AcoesCard = ({ procedimento, onAddCalendar, onSendMessage, onCancel, onIns
             null
           )
         ) : (
-          // para voluntários/administradores: mantém comportamento anterior (inscrever / cancelar inscrição)
+          // para voluntários/administradores: mantém comportamento anterior 
           (status === 'disponivel' && onInscrever) ? (
             <button onClick={onInscrever} className="w-full bg-green-600 text-white font-semibold py-3 px-4 rounded-lg hover:bg-green-700">
               Inscrever-se
@@ -311,7 +311,6 @@ export default function DetalhesProcedimento() {
     <div className="min-h-screen bg-gray-100">
       <DetalhesHeader to={dashboardTo} onOpenCalendar={async () => {
         try {
-          // Fetch user's procedimentos depending on role
           const tipo = tipoNormalized;
           let res;
           if (tipo.includes('estud')) {

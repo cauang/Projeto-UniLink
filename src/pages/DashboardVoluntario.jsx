@@ -21,7 +21,7 @@ import { toast } from 'react-hot-toast';
 import { formatarHorario } from "../utils/formatters";
 import CalendarWidget from '../components/CalendarWidget';
 
-// --- Imports dos Modais (NOVO) ---
+// --- Imports dos Modais ---
 import ModalConfirmarInscricao from './ConfirmacaoInscricao'; // Ajuste o caminho se necessário
 import ConfirmacaoCancelamento from './ConfirmacaoCancelamento.jsx'; // Ajuste o caminho se necessário
 
@@ -33,7 +33,6 @@ const PRIMARY_BLUE = "#1E40FF";
 
 // --- Componente Header ---
 const DashboardHeader = ({ profile, onOpenCalendar }) => (
-  // (Sem alterações)
   <header
     className="w-full text-white p-6 rounded-b-lg shadow-md"
     style={{ backgroundColor: PRIMARY_BLUE }}
@@ -68,7 +67,6 @@ const DashboardHeader = ({ profile, onOpenCalendar }) => (
 
 // --- Componentes dos Cards ---
 const ResumoCard = ({ icon, title, value, color }) => (
-  // (Sem alterações)
   <div
     className="bg-white p-6 rounded-lg shadow border border-gray-200 flex items-center justify-between"
   >
@@ -82,7 +80,6 @@ const ResumoCard = ({ icon, title, value, color }) => (
 
 // Card para "Minhas Inscrições"
 const ProcedimentoInscritoItem = ({ proc, onCancelar }) => (
-  // (Sem alterações no JSX, apenas a lógica do onCancelar vai mudar na implementação)
   <div
     className="bg-blue-50 p-6 rounded-lg shadow border border-blue-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
   >
@@ -126,7 +123,6 @@ const ProcedimentoInscritoItem = ({ proc, onCancelar }) => (
 
 // Card para "Disponíveis"
 const ProcedimentoDisponivelItem = ({ proc, onInscrever }) => (
-  // (Sem alterações no JSX, apenas a lógica do onInscrever vai mudar na implementação)
   <div
     className="bg-white p-6 rounded-lg shadow border border-gray-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4"
   >
@@ -164,7 +160,6 @@ const ProcedimentoDisponivelItem = ({ proc, onInscrever }) => (
 
 // Card para "Histórico"
 const HistoricoItem = ({ proc }) => (
-  // (Sem alterações)
   <div
     className="bg-white p-4 rounded-lg shadow border border-gray-200 flex items-center justify-between"
   >
@@ -183,14 +178,12 @@ const HistoricoItem = ({ proc }) => (
 
 // Componente de Loading/Erro
 const LoadingSpinner = () => (
-  // (Sem alterações)
   <div className="flex justify-center items-center py-20">
     <Loader2 size={48} className="animate-spin text-blue-600" />
   </div>
 );
 
 const ErrorDisplay = ({ message }) => (
-  // (Sem alterações)
   <div className="flex justify-center items-center py-20 px-6">
     <div className="flex items-center gap-3 p-4 bg-red-100 border border-red-300 rounded-lg text-red-700">
       <AlertTriangle size={24} />
@@ -221,7 +214,6 @@ export default function DashboardVoluntario() {
   const [procSelecionado, setProcSelecionado] = useState(null); // Guarda o 'proc' para o modal
 
   const fetchData = async () => {
-    // (Sem alterações na lógica de fetch)
     setLoading(true);
     setError(null);
     try {
@@ -277,7 +269,7 @@ export default function DashboardVoluntario() {
       const concluidos = Array.isArray(historicoRes.data)
         ? historicoRes.data.filter((p) => p.status === "concluido").length
         : 0;
-      const pontos = 0; // Pontos não calculados no backend ainda
+      const pontos = 0; 
       setSummary({ agendados, concluidos, pontos });
     } catch (err) {
       setError(
@@ -304,7 +296,7 @@ export default function DashboardVoluntario() {
     try {
       await api.post("/procedimentos/inscrever", { procedimentoId: id });
       toast.success("Inscrição realizada com sucesso!");
-      await fetchData(); // Recarrega os dados para garantir consistência
+      await fetchData(); 
     } catch (err) {
       // Se falhou, reverte a mudança na UI
       setInscricoes(inscricoes.filter((p) => p.id !== id));
@@ -323,7 +315,7 @@ export default function DashboardVoluntario() {
     try {
       await api.post("/procedimentos/cancelar", { procedimentoId: id });
       toast.success("Inscrição cancelada com sucesso!");
-      await fetchData(); // Recarrega os dados para garantir consistência
+      await fetchData(); 
     } catch (err) {
       // Se falhou, reverte
       setDisponiveis(disponiveis.filter((p) => p.id !== id));
@@ -375,7 +367,7 @@ export default function DashboardVoluntario() {
     if (procSelecionado) {
       handleInscricao(procSelecionado.id); // Chama a lógica de API
     }
-    onFecharModais(); // Fecha o modal
+    onFecharModais(); 
   };
 
   // Chamado quando o usuário CONFIRMA o cancelamento no modal
@@ -384,7 +376,7 @@ export default function DashboardVoluntario() {
     if (procSelecionado) {
       handleCancelamento(procSelecionado.id); // Chama a lógica de API
     }
-    onFecharModais(); // Fecha o modal
+    onFecharModais(); 
   };
 
 
@@ -462,7 +454,7 @@ export default function DashboardVoluntario() {
           />
         </section>
 
-        {/* Seção "Minhas Inscrições" (ALTERADO) */}
+        {/* Seção "Minhas Inscrições"-*/}
         <section className="mb-10">
           <h2 className="text-2xl font-semibold text-gray-800 mb-2">
             Minhas Inscrições
@@ -487,7 +479,7 @@ export default function DashboardVoluntario() {
           </div>
         </section>
 
-        {/* Seção "Procedimentos Disponíveis" (ALTERADO) */}
+        {/* Seção "Procedimentos Disponíveis"*/}
         <section className="mb-10">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">
             Procedimentos Disponíveis
@@ -498,7 +490,7 @@ export default function DashboardVoluntario() {
                 <ProcedimentoDisponivelItem
                   key={proc.id}
                   proc={proc}
-                  onInscrever={onAbrirModalInscricao} // ALTERADO
+                  onInscrever={onAbrirModalInscricao}
                 />
               ))
             ) : (
@@ -509,7 +501,7 @@ export default function DashboardVoluntario() {
           </div>
         </section>
 
-        {/* Seção de Histórico (Sem alterações) */}
+        {/* Seção de Histórico*/}
         <section>
           <h2 className="text-2xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
             <History className="h-6 w-6" />
@@ -532,7 +524,7 @@ export default function DashboardVoluntario() {
         </section>
       </main>
 
-      {/* --- Renderização dos Modais (NOVO) --- */}
+      {/* --- Renderização dos Modais --- */}
       {/* Eles ficam "escutando" os estados de visibilidade */}
       
       <ModalConfirmarInscricao
