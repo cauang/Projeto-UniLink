@@ -9,6 +9,8 @@ import {
   Users,
   PlusCircle,
   LogOut,
+  Loader2,
+  AlertTriangle,
 } from "lucide-react";
 import CalendarWidget from '../components/CalendarWidget';
 import { toast } from 'react-hot-toast';
@@ -16,9 +18,29 @@ import { formatarData, formatarHorario } from "../utils/formatters";
 import api from "../api/http";
 import useAuth from "../store/useAuth";
 
+const PRIMARY_BLUE = '#1E40FF';
+
+const LoadingSpinner = () => (
+  <div className="flex justify-center items-center py-20">
+    <Loader2 size={48} className="animate-spin text-blue-600" />
+  </div>
+);
+
+const ErrorDisplay = ({ message }) => (
+  <div className="flex justify-center items-center py-20 px-6">
+    <div className="flex items-center gap-3 p-4 bg-red-100 border border-red-300 rounded-lg text-red-700">
+      <AlertTriangle size={24} />
+      <p>
+        <strong>Erro:</strong> {message}
+      </p>
+    </div>
+  </div>
+);
+
 export default function DashboardEstudante() {
   const [procedimentos, setProcedimentos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null); // Novo estado de erro
   const navigate = useNavigate();
   const user = useAuth((s) => s.user);
 
@@ -29,17 +51,20 @@ export default function DashboardEstudante() {
   };
 
   useEffect(() => {
-    if (!user || user.tipo_usuario !== "Estudante") {
+    if (!user || user.tipo_usuario.toLowerCase() !== "estudante") {
       navigate("/login");
       return;
     }
 
     const fetchProcedimentos = async () => {
+      setLoading(true);
+      setError(null);
       try {
         const res = await api.get("/procedimentos/meus-procedimentos");
         setProcedimentos(res.data || []);
       } catch (err) {
         console.error("Erro ao carregar procedimentos:", err);
+        setError(err.message || "Não foi possível carregar as solicitações.");
       } finally {
         setLoading(false);
       }
@@ -65,7 +90,41 @@ export default function DashboardEstudante() {
   }).length;
   const totalVoluntarios = procedimentos.reduce((acc, p) => acc + (p.voluntarios_count || p.voluntarios || p.inscricoes_count || 0), 0);
 
-  if (loading) return <div className="p-6">Carregando...</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-100">
+        {/* HEADER ANTES DO CARREGAMENTO */}
+        <header className="w-full text-white p-6 rounded-b-lg shadow-md" style={{ backgroundColor: PRIMARY_BLUE }}>
+          <div className="max-w-7xl mx-auto animate-pulse">
+            <div className="h-8 bg-blue-500 rounded w-1/4 mb-2"></div>
+            <div className="h-4 bg-blue-500 rounded w-1/2"></div>
+          </div>
+        </header>
+        {/* SPINNER */}
+        <main className="p-6 md:p-10 max-w-7xl mx-auto">
+          <LoadingSpinner />
+        </main>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-100">
+        {/* HEADER DE ERRO */}
+        <header className="w-full text-white p-6 rounded-b-lg shadow-md" style={{ backgroundColor: PRIMARY_BLUE }}>
+          <div className="max-w-7xl mx-auto">
+            <h1 className="text-2xl font-bold">Odontologia</h1>
+            <p className="text-sm opacity-90">Erro ao carregar dados.</p>
+          </div>
+        </header>
+        {/* EXIBIÇÃO DO ERRO */}
+        <main className="p-6 md:p-10 max-w-7xl mx-auto">
+          <ErrorDisplay message={error} />
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -77,7 +136,7 @@ export default function DashboardEstudante() {
           <div className="flex items-center gap-4">
             <button 
                 onClick={handleLogout} 
-                className="p-2 hover:bg-white/20 rounded-full transition-colors cursor-pointer transform scale-x-[-1]" // Adicionado cursor-pointer
+                className="p-2 hover:bg-white/20 rounded-full transition-colors cursor-pointer transform scale-x-[-1]" 
                 title="Sair / Logout"
             >
                 <LogOut className="h-7 w-7" />
@@ -91,14 +150,14 @@ export default function DashboardEstudante() {
 
           {/* LADO DIREITO: Nova Solicitação, Calendário, Perfil */}
           <div className="flex items-center gap-4">
-            <button onClick={() => navigate('/nova-solicitacao')} className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold flex items-center gap-2 hover:bg-gray-50 transition-colors cursor-pointer"> {/* Adicionado cursor-pointer */}
+            <button onClick={() => navigate('/nova-solicitacao')} className="bg-white text-blue-600 px-4 py-2 rounded-lg font-semibold flex items-center gap-2 hover:bg-gray-50 transition-colors cursor-pointer">
               <PlusCircle className="h-5 w-5" />
               Nova Solicitação
             </button>
             
             <div className="flex items-center gap-4">
-              <button onClick={openCalendar} className="text-white opacity-95 hover:opacity-75 cursor-pointer" title="Calendário"><CalendarDays className="h-6 w-6" /></button> {/* Adicionado cursor-pointer */}
-              <button onClick={openProfile} className="text-white opacity-95 hover:opacity-75 flex items-center gap-2 cursor-pointer" title="Meu Perfil"><User className="h-6 w-6" /><span className="hidden sm:inline">Perfil</span></button> {/* Adicionado cursor-pointer */}
+              <button onClick={openCalendar} className="text-white opacity-95 hover:opacity-75 cursor-pointer" title="Calendário"><CalendarDays className="h-6 w-6" /></button>
+              <button onClick={openProfile} className="text-white opacity-95 hover:opacity-75 flex items-center gap-2 cursor-pointer" title="Meu Perfil"><User className="h-6 w-6" /><span className="hidden sm:inline">Perfil</span></button>
             </div>
           </div>
         </div>
@@ -134,7 +193,7 @@ export default function DashboardEstudante() {
             <div className="bg-white p-6 rounded-lg shadow">Nenhum procedimento encontrado.</div>
           ) : (
             procedimentos.map((proc) => (
-              <div key={proc.id} className="bg-white p-6 rounded-lg shadow-md flex items-center justify-between cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate(`/procedimento/${proc.id}`)}> {/* Adicionado cursor-pointer */}
+              <div key={proc.id} className="bg-white p-6 rounded-lg shadow-md flex items-center justify-between cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate(`/procedimento/${proc.id}`)}>
                 <div className="w-full">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
@@ -157,8 +216,8 @@ export default function DashboardEstudante() {
                   </div>
                 </div>
                 <div className="ml-6 flex-shrink-0 flex flex-col items-end gap-4">
-                  <button onClick={(e)=>{e.stopPropagation(); navigate(`/procedimento/${proc.id}`);}} className="px-4 py-2 bg-white border rounded-lg hover:bg-gray-50 cursor-pointer">Ver Detalhes</button> {/* Adicionado cursor-pointer */}
-                  <button onClick={(e)=>{e.stopPropagation(); navigate(`/procedimento/${proc.id}`);}} className="p-2 rounded-full bg-gray-50 border hover:bg-gray-100 cursor-pointer"><ChevronRight /></button> {/* Adicionado cursor-pointer */}
+                  <button onClick={(e)=>{e.stopPropagation(); navigate(`/procedimento/${proc.id}`);}} className="px-4 py-2 bg-white border rounded-lg hover:bg-gray-50 cursor-pointer">Ver Detalhes</button>
+                  <button onClick={(e)=>{e.stopPropagation(); navigate(`/procedimento/${proc.id}`);}} className="p-2 rounded-full bg-gray-50 border hover:bg-gray-100 cursor-pointer"><ChevronRight /></button>
                 </div>
               </div>
             ))
