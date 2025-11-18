@@ -2,9 +2,9 @@ import { useState } from 'react';
 import api from '../api/http';
 import { toast } from 'react-hot-toast';
 import { Link } from 'react-router-dom';
-import { LockKeyhole } from 'lucide-react'; // Ícone para redefinição de senha
+import { LockKeyhole } from 'lucide-react';
 
-// Importamos os elementos decorativos para criar a identidade visual
+
 import CircleSmall from '../components/CircleSmall';
 import CircleLarge from '../components/CircleLarge';
 import DecorativeDots from '../components/DecorativeDots';
@@ -13,7 +13,6 @@ export default function ForgotPassword(){
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Cor primária do projeto para facilitar a leitura
   const PRIMARY_BLUE = "#1E40FF"; 
 
   const handleSubmit = async (e) =>{
@@ -47,7 +46,7 @@ export default function ForgotPassword(){
           <h2 className="text-2xl font-bold text-gray-800">Esqueci minha senha</h2>
           <p className="text-sm text-gray-500 mt-1">
              Insira seu e-mail para receber as instruções de redefinição.
-          </p>
+          </p>  
         </div>
 
         {/* Formulário */}
