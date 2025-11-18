@@ -1,0 +1,7 @@
+export default function CircleSmall({ className }) {
+  return (
+    <svg className={className} width="154" height="154" viewBox="0 0 154 154" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="77" cy="77" r="74.5" stroke="#97B8FF" strokeWidth="5"/>
+    </svg>
+  );
+}

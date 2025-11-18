@@ -3,58 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ChevronLeft, Eye, EyeOff } from "lucide-react";
 import { toast } from "react-hot-toast";
 import api from "../api/http";
-// import useAuth from "../store/useAuth"; // Removido para evitar erro de importação
-
-// --- Mock API para fins de demonstração ---
-const mockApi = {
-  post: (url, data) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        console.log("Mock API Post:", url, data);
-
-        // --- LÓGICA DE SIMULAÇÃO ATUALIZADA ---
-        // Verifica se a matrícula e senha são as de teste
-        if (data.matricula === "123456" && data.senha === "123456") {
-          // Se sim, loga como Voluntário (sucesso)
-          console.log("Simulando login de Voluntário BEM-SUCEDIDO...");
-          resolve({
-            data: {
-              token: "fake-jwt-token-12345",
-              user: {
-                id: 123,
-                nome: "Usuário Voluntário de Teste",
-                role: "Voluntario", // <-- A função (role) do usuário
-              },
-            },
-          });
-        } else {
-          // Se não, retorna um erro de senha/matrícula inválida
-          console.log("Simulando login MAL-SUCEDIDO...");
-          return reject({
-            response: {
-              data: { message: "Matrícula ou senha inválida (simulado)" },
-            },
-          });
-        }
-        // ------------------------------------------
-      }, 1000);
-    });
-  },
-};
-
-// --- PONTO PRINCIPAL PARA TESTES ---
-// Para USAR a simulação (mock), deixe esta linha ATIVA:
-//const api = mockApi;
-
-// Para USAR sua API real, comente a linha acima (const api = mockApi;)
-// e descomente a linha de importação no topo (import api from "../api/http";)
-// ------------------------------------
-
-// Mock da função setToken (já que useAuth não está disponível neste contexto)
-const setToken = (token) => {
-  console.log("Token armazenado (simulado):", token);
-};
-// ------------------------------------
+import useAuth from "../store/useAuth";
 
 export default function LoginSplit() {
   const [matricula, setMatricula] = useState("");
@@ -62,7 +11,7 @@ export default function LoginSplit() {
   const [showPassword, setShowPassword] = useState(false); // <-- Novo estado
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  //const setToken = useAuth((state) => state.setToken); // Você usaria este no seu app real
+  const setAuth = useAuth((state) => state.setAuth);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -78,23 +27,23 @@ export default function LoginSplit() {
         senha,
       });
 
-      console.log("Resposta do servidor:", response.data);
-
-      // 1. Armazenar o token
-      setToken(response.data.token);
+      const { token, user } = response.data;
+      
+      // Armazenar o token e os dados do usuário
+      setAuth(token, user);
       toast.success("Login realizado com sucesso!");
 
-      // 2. Lógica de redirecionamento baseado na função (role)
-      const userRole = response.data.user?.role;
+      // Redirecionar baseado no tipo de usuário retornado pelo backend
+      // Adiciona logs temporários para diagnóstico e faz checagem mais tolerante
+      console.log('Login response user:', user);
+      const tipo = (user?.tipo_usuario || '').toString().toLowerCase();
+      console.log('Normalized tipo_usuario:', tipo);
 
-      if (userRole === "Voluntario") {
-        navigate("/voluntarios"); // <-- ATUALIZADO: Rota do seu App.jsx
+      if (tipo.includes('estud')) {
+        navigate('/dashboard-estudante');
       } else {
-        // Um fallback para outros tipos de usuário ou caso a função não seja definida
-        console.warn(
-          `Função de usuário não reconhecida: ${userRole}. Redirecionando para Home.`
-        );
-        navigate("/");
+        // Caso contrario, segue para o dashboard padrão (voluntário)
+        navigate('/dashboard');
       }
     } catch (error) {
       console.error(error);
@@ -237,9 +186,9 @@ export default function LoginSplit() {
               </button>
 
               <div className="mt-3 text-center">
-                <a href="#" className="text-sm text-slate-600 hover:underline">
+                <Link to="/forgot-password" className="text-sm text-slate-600 hover:underline">
                   Esqueceu sua senha?
-                </a>
+                </Link>
                 <p className="mt-2 text-[12px] leading-relaxed text-slate-500">
                   Acesse a página do{" "}
                   <span className="underline">Unifor Online</span> e clique em

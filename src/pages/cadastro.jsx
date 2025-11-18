@@ -1,60 +1,107 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { ChevronLeft } from "lucide-react";
 import { toast } from "react-hot-toast";
 import api from "../api/http";
+import useAuth from "../store/useAuth";
 
-export function Cadastro() {
+export default function Cadastro() {
   const [form, setForm] = useState({
     nome: "",
-    curso: "",
-    matricula: "",
     email: "",
+    matricula: "",
     telefone: "",
-    senha: "",
+    curso: "",
     semestre: "",
-    biografia: ""
+    senha: "",
+    confirmarSenha: ""
   });
+  // tipo_usuario selection removed: registrations will default to backend's default (Estudante)
   const [loading, setLoading] = useState(false);
+  const [matriculaStatus, setMatriculaStatus] = useState(null);
   const navigate = useNavigate();
+  const setToken = useAuth((state) => state.setToken);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = async (e) => {
+    const { name, value } = e.target;
+    setForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+
+    // Verificar matrícula quando o campo é alterado
+    if (name === 'matricula' && value.length >= 8) {
+      const result = await checkMatricula(value);
+      setMatriculaStatus(result);
+    }
+  };
+
+  const checkMatricula = async (matricula) => {
+    try {
+      const response = await api.get(`/auth/check-matricula?matricula=${matricula}`);
+      return response.data;
+    } catch (error) {
+      console.error('Erro ao verificar matrícula:', error);
+      return { exists: false, isOdonto: false };
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Validação simples
-    if (
-      !form.nome ||
-      !form.curso ||
-      !form.matricula ||
-      !form.email ||
-      !form.senha ||
-      !form.semestre ||
-      !form.confirmarSenha
-    ) {
+    const requiredFields = ['nome', 'email', 'matricula', 'curso', 'semestre', 'senha', 'confirmarSenha'];
+    const missingFields = requiredFields.filter(field => !form[field]);
+    
+    if (missingFields.length > 0) {
       toast.error("Preencha todos os campos obrigatórios");
       return;
-    }    if (form.senha !== form.confirmarSenha) {
-      toast.error("As senhas não coincidem");
+    }
+
+    if (!form.email.endsWith('@edu.unifor.br')) {
+      toast.error("Use seu email institucional (@edu.unifor.br)");
       return;
     }
-    
+
     if (form.senha.length < 6) {
       toast.error("A senha deve ter no mínimo 6 caracteres");
       return;
     }
-     setLoading(true);
+
+    if (form.senha !== form.confirmarSenha) {
+      toast.error("As senhas não coincidem");
+      return;
+    }
+
+    setLoading(true);
     try {
-      // Remover 'confirmarSenha' do objeto enviado para a API
-      const { confirmarSenha, ...formData } = form;
-      
-      await api.post("/auth/register", formData);
-      
-      toast.success("Cadastro realizado com sucesso!");
+      // Verificar matrícula primeiro
+      const matriculaCheck = await checkMatricula(form.matricula);
+      const tipo_usuario = matriculaCheck.exists && matriculaCheck.isOdonto ? 'Estudante' : 'Voluntario';
+
+      const response = await api.post("/auth/register", {
+        nome: form.nome,
+        email: form.email,
+        matricula: form.matricula,
+        telefone: form.telefone,
+        curso: form.curso,
+        semestre: form.semestre,
+        senha: form.senha,
+        tipo_usuario
+      });
+
+      // The register endpoint currently returns inserted id; if it returns a token,
+      // setToken below will work. Otherwise keep the success message and redirect
+      // to login/dashboard as appropriate.
+      // After successful registration, redirect user to the login page
+      // (do NOT automatically sign in).
+      if (response.data.token) {
+        // If backend unexpectedly returns a token, do not auto-login; ignore it.
+        console.warn('Register returned token; ignoring auto-login for security');
+      }
+      toast.success("Cadastro realizado com sucesso! Faça login para continuar.");
       navigate("/login");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Erro ao cadastrar usuário");
+      console.error(error);
+      toast.error(error.response?.data?.message || "Erro ao fazer cadastro");
     } finally {
       setLoading(false);
     }
@@ -64,6 +111,13 @@ export function Cadastro() {
     "Ciência da Computação",
     "Medicina",
     "Direito",
+    "Sistemas de Informação",
+    "Engenharia de Software",
+    "Ciências Biológicas",
+    "Economia",
+    "Jornalismo",
+    "Design Gráfico",
+    "História",
     "Psicologia",
     "Administração",
     "Arquitetura e Urbanismo",
@@ -73,9 +127,15 @@ export function Cadastro() {
     "Engenharia Química",
     "Engenharia de Produção",
     "Farmácia",
+    "Enfermagem",
+    "Fisioterapia",
+    "Nutrição",
+    "Odontologia",
+    "Publicidade e Propaganda",
+    "Relações Internacionais",    
     "Veterinária"
   ];
-  const semestres = Array.from({ length: 12 }, (_, i) => `${i + 1}º Semestre`);
+  const semestres = Array.from({ length: 12 }, (_, i) => i + 1);
 
 
   return (
@@ -136,28 +196,16 @@ export function Cadastro() {
               to="/login" 
               className="inline-flex items-center gap-1 mb-4 text-sm text-slate-600 hover:text-slate-900"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
+              <ChevronLeft className="h-4 w-4" />
               Voltar
             </Link>
 
             {/* Título e Subtítulo da Screenshot */}
             <h1 className="text-center text-[20px] md:text-[22px] font-semibold text-slate-800">
-              Cadastro - Voluntário
+              Cadastro
             </h1>
             <p className="text-center text-sm text-slate-600 mt-2">
-              Cadastre-se para participar como voluntário em procedimentos
+              Preencha seus dados para criar sua conta
             </p>
 
             <form className="mt-8" onSubmit={handleSubmit}>
@@ -206,7 +254,7 @@ export function Cadastro() {
                     >
                       <option value="" disabled>Selecione</option>
                       {semestres.map((semestre) => (
-                        <option key={semestre} value={semestre}>{semestre}</option>
+                        <option key={semestre} value={semestre}>{`${semestre}º Semestre`}</option>
                       ))}
                     </select>
                   </div>
@@ -218,13 +266,26 @@ export function Cadastro() {
                     <label className="block text-sm font-medium text-slate-700">
                       Matrícula*
                     </label>
-                    <input
-                      name="matricula"
-                      value={form.matricula}
-                      onChange={handleChange}
-                      className="mt-2 w-full rounded-xl bg-[rgba(176,186,195,0.40)] px-4 py-3 text-slate-900 placeholder:text-slate-500 focus:bg-[rgba(176,186,195,0.50)] outline-none"
-                      placeholder="Ex: 2024001234"
-                    />
+                    <div>
+                      <input
+                        name="matricula"
+                        value={form.matricula}
+                        onChange={handleChange}
+                        className="mt-2 w-full rounded-xl bg-[rgba(176,186,195,0.40)] px-4 py-3 text-slate-900 placeholder:text-slate-500 focus:bg-[rgba(176,186,195,0.50)] outline-none"
+                        placeholder="Ex: 2024001234"
+                      />
+                      {matriculaStatus && (
+                        <p className={`mt-1 text-sm ${
+                          matriculaStatus.exists && matriculaStatus.isOdonto
+                            ? 'text-green-600'
+                            : 'text-blue-600'
+                        }`}>
+                          {matriculaStatus.exists && matriculaStatus.isOdonto
+                            ? 'Matrícula encontrada - Será registrado como Estudante'
+                            : 'Será registrado como Voluntário'}
+                        </p>
+                      )}
+                    </div>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700">

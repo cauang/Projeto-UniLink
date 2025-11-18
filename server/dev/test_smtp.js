@@ -17,34 +17,6 @@ async function test() {
   const from = process.env.SMTP_FROM || user;
   const to = process.env.SMTP_TEST_TO || user;
 
-  if (!host || !user || !pass) {
-    console.error('Preencha SMTP_HOST, SMTP_USER e SMTP_PASS no .env antes de rodar este teste');
-    process.exit(1);
-  }
-
-  const transporter = nodemailer.createTransport({
-    host,
-    port,
-    secure,
-    auth: { user, pass }
-  });
-
-  try {
-    await transporter.verify();
-    console.log('SMTP conectado com sucesso');
-
-    const info = await transporter.sendMail({
-      from,
-      to,
-      subject: 'Teste SMTP - UniLink',
-      text: 'Este é um e-mail de teste do UniLink. Se você o recebeu, o SMTP está funcionando.'
-    });
-
-    console.log('E-mail de teste enviado:', info.messageId);
-  } catch (err) {
-    console.error('Erro ao testar SMTP:', err);
-    process.exit(1);
-  }
-}
+  // REMOVED: test_smtp utility. SMTP tests should be done with dedicated tooling.
 
 test();

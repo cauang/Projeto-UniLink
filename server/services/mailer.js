@@ -17,6 +17,10 @@ if (process.env.SMTP_HOST) {
       user: process.env.SMTP_USER,
       pass: process.env.SMTP_PASS,
     },
+    connectionTimeout: Number(process.env.SMTP_TIMEOUT) || 30000,
+    tls: {
+      rejectUnauthorized: false
+    }
   });
 
   transporter.verify()

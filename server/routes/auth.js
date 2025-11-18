@@ -3,9 +3,38 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import pool from '../db.js';
+import { checkMatricula } from './check-matricula.js';
 import { sendResetEmail } from '../services/mailer.js';
+import {
+  existsUserByMatriculaOrEmail,
+  createUser,
+  findByMatricula,
+  findByEmail,
+  isVoluntarioByUserId
+} from '../repositories/users.js';
+import {
+  createPasswordReset,
+  findPasswordResetByToken,
+  deletePasswordResetsByUserId
+} from '../repositories/passwordResets.js';
 
 const router = express.Router();
+
+// check-matricula
+router.get('/check-matricula', async (req, res) => {
+  const { matricula } = req.query;
+  if (!matricula) {
+    return res.status(400).json({ message: 'Matrícula é obrigatória' });
+  }
+
+  try {
+    const result = await checkMatricula(matricula);
+    res.json(result);
+  } catch (err) {
+    console.error('Erro ao verificar matrícula:', err);
+    res.status(500).json({ message: 'Erro ao verificar matrícula' });
+  }
+});
 
 // register
 router.post('/register', async (req, res) => {
@@ -14,22 +43,32 @@ router.post('/register', async (req, res) => {
     return res.status(400).json({ message: 'Preencha todos os campos obrigatórios' });
   }
   try {
-    const exists = await pool.query(
-      'SELECT 1 FROM unilink.usuario WHERE matricula = $1 OR email = $2',
-      [matricula, email]
-    );
-    if (exists.rows.length > 0) return res.status(409).json({ message: 'Matrícula ou e-mail já cadastrado' });
+    const exists = await existsUserByMatriculaOrEmail(matricula, email);
+    if (exists) return res.status(409).json({ message: 'Matrícula ou e-mail já cadastrado' });
 
     const hash = await bcrypt.hash(senha, 10);
-    await pool.query(
-      `INSERT INTO unilink.usuario (nome, curso, matricula, email, telefone, senha, semestre, biografia, horas_complementares, avaliacao)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 0, 0.00)`,
-      [nome, curso, matricula, email, telefone, hash, semestre, biografia]
-    );
-    res.status(201).json({ message: 'Usuário cadastrado com sucesso' });
+    try {
+      // Ensure default tipo_usuario is 'Voluntario' when not provided
+      const inserted = await createUser({ nome, curso, matricula, email, telefone, senha: hash, semestre, tipo_usuario: 'Voluntario', biografia });
+      // Send success and return immediately to avoid later error handling trying to send another response
+      return res.status(201).json({ message: 'Usuário cadastrado com sucesso', id_usuario: inserted.id_usuario });
+    } catch (insertError) {
+      console.error('Erro ao inserir usuário:', insertError);
+      throw insertError;
+    }
   } catch (err) {
-    console.error('Erro no register:', err);
-    res.status(500).json({ message: 'Erro ao cadastrar usuário' });
+    console.error('Erro no register:', err && err.message ? err.message : err);
+    // If a response was already sent (e.g. insert succeeded and we returned), don't try to send another
+    if (res.headersSent) return;
+
+    // Se o erro for de chave única (matrícula ou email duplicado)
+    if (err && err.code === '23505') {
+      return res.status(409).json({ message: 'Matrícula ou e-mail já cadastrado' });
+    } else if (err && err.code === '22P02') {
+      return res.status(400).json({ message: 'Formato de dado inválido' });
+    } else {
+      return res.status(500).json({ message: 'Erro ao cadastrar usuário' });
+    }
   }
 });
 
@@ -37,22 +76,73 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   const { matricula, senha } = req.body;
   try {
-    const userResult = await pool.query('SELECT * FROM unilink.usuario WHERE matricula = $1', [matricula]);
-    const user = userResult.rows[0];
+  const user = await findByMatricula(matricula);
     if (!user) return res.status(401).json({ message: 'Matrícula ou senha incorreta' });
 
     const senhaCorreta = await bcrypt.compare(senha, user.senha);
     if (!senhaCorreta) return res.status(401).json({ message: 'Matrícula ou senha incorreta' });
 
+    // Determina o tipo do usuário. Prioriza o valor armazenado em `usuario.tipo_usuario`
+    // se existir; caso contrário, usa a presença em `inscricoes` como fallback.
+    let tipo = null;
+    if (user.tipo_usuario) {
+      tipo = String(user.tipo_usuario);
+    } else {
+      try {
+        tipo = (await isVoluntarioByUserId(user.id_usuario)) ? 'Voluntario' : 'Estudante';
+      } catch (volErr) {
+        // Log and continue with a safe default
+        console.error('Erro ao checar voluntario:', volErr && volErr.message ? volErr.message : volErr);
+        tipo = 'Estudante';
+      }
+    }
+    // Normaliza para valores esperados
+    tipo = tipo && tipo.toString().toLowerCase().includes('volunt') ? 'Voluntario' : 'Estudante';
     const token = jwt.sign({
       id: user.id_usuario,
       matricula: user.matricula,
       nome: user.nome,
       curso: user.curso,
       email: user.email,
+      tipo_usuario: tipo
     }, process.env.JWT_SECRET || 'sua_chave_secreta', { expiresIn: '24h' });
+    
 
-    res.json({ token });
+    // Remove a senha antes de enviar os dados do usuário
+    delete user.senha;
+
+    // Log de login (sem expor senha) para diagnóstico
+    try {
+      // Usa JSON.stringify para garantir que todo o objeto seja exibido no console
+      const loginInfo = {
+        id_usuario: user.id_usuario,
+        matricula: user.matricula,
+        nome: user.nome,
+        email: user.email,
+        tipo_usuario: tipo,
+        timestamp: new Date().toISOString(),
+      };
+      console.log('User login: ' + JSON.stringify(loginInfo, null, 2));
+    } catch (logErr) {
+      // não quebra a resposta se o log falhar
+      console.error('Erro ao logar informação de login:', logErr);
+    }
+
+    // Atualiza o campo ultimo_login no banco no formato brasileiro (DD/MM/YYYY HH24:MI:SS)
+    try {
+      await pool.query("UPDATE unilink.usuario SET ultimo_login = to_char(NOW(), 'DD/MM/YYYY HH24:MI:SS') WHERE id_usuario = $1", [user.id_usuario]);
+    } catch (upErr) {
+      console.error('Erro ao atualizar ultimo_login:', upErr && upErr.message ? upErr.message : upErr);
+      // Não interrompe o login se falhar ao gravar o timestamp
+    }
+
+    res.json({
+      token,
+      user: {
+        ...user,
+        tipo_usuario: tipo
+      }
+    });
   } catch (err) {
     console.error('Erro no login:', err);
     res.status(500).json({ message: 'Erro interno do servidor' });
@@ -64,14 +154,13 @@ router.post('/forgot-password', async (req, res) => {
   const { email } = req.body;
   if (!email) return res.status(400).json({ message: 'Email é obrigatório' });
   try {
-    const userResult = await pool.query('SELECT id_usuario, email, matricula FROM unilink.usuario WHERE email = $1', [email]);
-    const user = userResult.rows[0];
+  const user = await findByEmail(email);
     if (!user) return res.json({ message: 'Se o e-mail existir, você receberá instruções para resetar a senha.' });
 
     const token = crypto.randomBytes(32).toString('hex');
     const expiresAt = new Date(Date.now() + 1000 * 60 * 60); // 1h
 
-    await pool.query('INSERT INTO unilink.password_resets (user_id, token, expires_at) VALUES ($1, $2, $3)', [user.id_usuario, token, expiresAt]);
+  await createPasswordReset(user.id_usuario, token, expiresAt);
 
     const frontUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
     const resetLink = `${frontUrl}/reset-password?token=${token}`;
@@ -89,8 +178,7 @@ router.get('/validate-reset', async (req, res) => {
   const { token } = req.query;
   if (!token) return res.status(400).json({ message: 'Token é obrigatório' });
   try {
-    const row = await pool.query('SELECT id, user_id, expires_at FROM unilink.password_resets WHERE token = $1', [token]);
-    const pr = row.rows[0];
+  const pr = await findPasswordResetByToken(token);
     if (!pr) return res.status(404).json({ message: 'Token inválido' });
     if (new Date(pr.expires_at) < new Date()) return res.status(410).json({ message: 'Token expirado' });
     return res.json({ ok: true, user_id: pr.user_id });
@@ -105,14 +193,13 @@ router.post('/reset-password', async (req, res) => {
   const { token, senha } = req.body;
   if (!token || !senha) return res.status(400).json({ message: 'Token e senha são obrigatórios' });
   try {
-    const row = await pool.query('SELECT id, user_id, expires_at FROM unilink.password_resets WHERE token = $1', [token]);
-    const pr = row.rows[0];
+  const pr = await findPasswordResetByToken(token);
     if (!pr) return res.status(404).json({ message: 'Token inválido' });
     if (new Date(pr.expires_at) < new Date()) return res.status(410).json({ message: 'Token expirado' });
 
     const hash = await bcrypt.hash(senha, 10);
-    await pool.query('UPDATE unilink.usuario SET senha = $1 WHERE id_usuario = $2', [hash, pr.user_id]);
-    await pool.query('DELETE FROM unilink.password_resets WHERE user_id = $1', [pr.user_id]);
+  await pool.query('UPDATE unilink.usuario SET senha = $1 WHERE id_usuario = $2', [hash, pr.user_id]);
+  await deletePasswordResetsByUserId(pr.user_id);
 
     return res.json({ message: 'Senha redefinida com sucesso' });
   } catch (err) {

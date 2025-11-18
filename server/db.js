@@ -10,11 +10,7 @@ dotenv.config({ path: join(__dirname, '.env') });
 const { Pool } = pg;
 
 const pool = new Pool({
-  user: 'postgres.svjsyicgprqelhocufwy',
-  password: 'Unilink_Unifor', 
-  host: 'aws-1-us-east-2.pooler.supabase.com',
-  port: 6543,
-  database: 'postgres',
+  connectionString: process.env.SUPABASE_CONNECTION_STRING,
   ssl: {
     rejectUnauthorized: false,
     require: true

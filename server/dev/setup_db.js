@@ -21,4 +21,5 @@ async function setupDatabase() {
   }
 }
 
-setupDatabase();
+// REMOVED: setup_db diagnostic script. DB schema changes should be executed via
+// proper migration tooling. This placeholder avoids accidental re-run.
