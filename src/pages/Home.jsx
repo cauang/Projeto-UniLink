@@ -17,7 +17,7 @@ export default function Home() {
       <section className="flex-1 bg-[#155DFC] flex items-center justify-center min-h-fit relative overflow-hidden">
         
         {/* --- DECORAÇÃO: BOLINHAS (Canto Superior Direito) --- */}
-        <DecorativeDots className="absolute top-0 right-0 mt-0 mr-0 opacity-60 md:opacity-100" />
+        {/*<DecorativeDots className="absolute top-0 right-0 mt-0 mr-0 opacity-60 md:opacity-100" />*/}
 
         <div className="container-page py-6 md:py-8 relative z-10">
           <div className="grid md:grid-cols-2 gap-0 items-center">
@@ -32,6 +32,7 @@ export default function Home() {
                 <h1 className="text-4xl md:text-5xl font-bold leading-tight">
                   Seja um<br/>Voluntário
                 </h1>
+                <DecorativeDots className="absolute top-0 right-0 mt-0 mr-0 opacity-60 md:opacity-100" />
                 <p className="mt-2 text-white/80 max-w-md leading-relaxed whitespace-pre-line">
                   "Conecte-se com alunos da Unifor e contribua para atividades práticas em diversos cursos!
                   Cadastre-se no Unilink e ajude colegas de diferentes áreas enquanto ganha experiência valiosa.

@@ -591,12 +591,12 @@ const Sobre = () => {
         <div className="text-center mt-12">
           <p className="text-sm text-gray-600">
             Ainda tem dúvidas?{" "}
-            <a
-              href="#"
+            <Link
+              to="/notFound"
               className="font-semibold text-blue-600 hover:underline"
             >
               Entre em Contato
-            </a>
+            </Link>
           </p>
         </div>
       </section>
