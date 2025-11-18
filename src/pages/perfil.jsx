@@ -7,11 +7,11 @@ import useAuth from "../store/useAuth";
 import {
   ChevronLeft,
   Calendar,
-  Bell,
   User,
   Edit,
   Star,
   Mail,
+  Bell,
   Phone,
   Briefcase,
   GraduationCap,
@@ -65,12 +65,6 @@ const PerfilHeader = ({ onOpenCalendar }) => (
       </div>
       <div className="flex items-center gap-6">
         <button onClick={onOpenCalendar} className="p-0"><Calendar size={22} className="cursor-pointer hover:opacity-80" /></button>
-        <div className="relative">
-          <Bell size={22} className="cursor-pointer hover:opacity-80" />
-          <span className="absolute -top-2 -right-2 w-4 h-4 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
-            1
-          </span>
-        </div>
         <Link
           to="/perfil"
           className="flex items-center gap-2 cursor-pointer hover:opacity-80"
