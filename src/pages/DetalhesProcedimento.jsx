@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
@@ -125,15 +126,15 @@ const DetalhesHeader = ({ to = '/dashboard', onOpenCalendar }) => (
         </div>
       </div>
 
+      {/* Lado Direito: Ícones compactos */}
       <div className="flex items-center gap-6">
-        <button onClick={onOpenCalendar} className="p-0"><Calendar size={22} className="cursor-pointer hover:opacity-80" /></button>
-        <div className="flex items-center gap-2 cursor-pointer hover:opacity-90">
-          <Link to="/perfil"><User className="h-6 w-6" />
-          
-          </Link>
-          <span className="font-medium hidden sm:inline">Perfil</span>
-        </div>
-      </div>
+        <button onClick={onOpenCalendar} className="p-0"><Calendar className="h-7 w-7 cursor-pointer hover:opacity-90" /></button>
+          <Link to="/perfil"
+          className="flex items-center gap-2 hover:opacity-80 cursor-pointer">
+          <User size={22} />
+          <span>Perfil</span>
+        </Link>
+      </div>  
     </div>
   </header>
 );
