@@ -1,6 +1,8 @@
 import React, { useCallback } from "react"; // Importa o useCallback
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer.jsx";
+import LoadingSpinner from '../components/LoadingSpinner';
+
 import {
   Heart,
   Stethoscope,
