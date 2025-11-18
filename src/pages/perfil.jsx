@@ -7,7 +7,6 @@ import useAuth from "../store/useAuth";
 import {
   ChevronLeft,
   Calendar,
-  Bell,
   User,
   Edit,
   Star,
@@ -99,9 +98,11 @@ const ProfileCard = ({ profile, editMode, onEdit, onSave, onCancel, saving }) =>
             {profile.tipo}
           </span>
           {/* Badge like 'Estudante de Odontologia' to match design */}
-          <div className="mb-3">
-            <span className="text-xs text-blue-700 bg-blue-100 px-3 py-1 rounded-full">{`${profile.tipo} de ${profile.curso}`}</span>
-          </div>
+            <div className="mb-3">
+              <span className="text-xs text-blue-700 bg-blue-100 px-3 py-1 rounded-full whitespace-nowrap">
+                {`${profile.tipo} de ${profile.curso}`}
+              </span>
+            </div>
       <p className="text-sm text-gray-600">
             Matrícula:{" "}
             <span className="font-medium text-gray-800 uppercase">{profile.matricula}</span>
