@@ -15,7 +15,7 @@ import {
   Briefcase,
   GraduationCap,
   BookText,
-  CalendarDays, // Para aba de notificações
+  CalendarDays, 
   ShieldCheck,
   Lock,
   Check,
