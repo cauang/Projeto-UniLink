@@ -163,7 +163,11 @@ export default function DashboardEstudante() {
         </div>
       </header>
 
-      <CalendarWidget visible={showCalendar} onClose={closeCalendar} events={procedimentos.map(p=>({date: p.data || p.date, title: p.titulo || p.nome || p.title || 'Procedimento'}))} />
+      <CalendarWidget visible={showCalendar} onClose={closeCalendar} events={procedimentos.map(p => ({
+        ...p, // Pass all original properties
+        date: p.data_procedimento || p.data || p.date, // Normalize date property
+        title: p.titulo || p.nome_procedimento || p.title || 'Procedimento', // Normalize title
+      }))} />
 
       <main className="max-w-7xl mx-auto px-6 py-8">
         <div className="flex items-center justify-between mb-6">

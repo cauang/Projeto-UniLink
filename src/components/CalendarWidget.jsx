@@ -377,7 +377,7 @@ export default function CalendarWidget({ visible, onClose, events = [] }) {
                 <h4 className="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">Resumo do Mês ({filter})</h4>
                 <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                        <span className="text-gray-600">Total Listado</span>
+                        <span className="text-gray-600">Total de Procedimentos</span>
                         <span className="text-2xl font-bold" style={{ color: THEME.primary }}>{summary.total}</span>
                     </div>
                     

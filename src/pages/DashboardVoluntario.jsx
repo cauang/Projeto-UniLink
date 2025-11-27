@@ -172,11 +172,12 @@ export default function DashboardVoluntario() {
           semestre: row.estudante_semestre || (row.estudante && row.estudante.semestre) || null,
         };
         const data = row.data ? formatarData(row.data) : (row.date ? formatarData(row.date) : null);
+        const raw_date = row.data || row.date;
         const horario = row.horario || row.time || null;
         const duracao = row.duracao || row.duration || null;
         const local = row.local || row.localizacao || row.location || null;
         const status = row.status || row.inscricao_status || row.status_proc || null;
-        return { id, titulo, estudante, data, horario, duracao, local, status };
+        return { id, titulo, estudante, data, raw_date, horario, duracao, local, status };
       };
 
       setInscricoes((inscricoesRes.data || []).map(normalize));
@@ -266,7 +267,12 @@ export default function DashboardVoluntario() {
   return (
     <div className="min-h-screen bg-gray-100">
       <DashboardHeader profile={profile} onOpenCalendar={openCalendar} onLogout={handleLogout} />
-      <CalendarWidget visible={showCalendar} onClose={closeCalendar} events={[...inscricoes, ...disponiveis, ...historico].map(i=>({date:i.data, title:i.titulo}))} />
+      <CalendarWidget visible={showCalendar} onClose={closeCalendar} events={
+        [...inscricoes, ...disponiveis, ...historico].map(i => ({
+          ...i,
+          date: i.raw_date, // Use the original date for the calendar
+        }))
+      } />
       <main className="p-6 md:p-10 max-w-7xl mx-auto">
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           <ResumoCard icon={<Calendar className="h-6 w-6 text-blue-600" />} title="Procedimentos Agendados" value={summary.agendados} color="bg-blue-100" />
