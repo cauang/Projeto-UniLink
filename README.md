@@ -1,18 +1,110 @@
-# React + Vite
+# UniLink
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+UniLink é uma plataforma projetada para conectar estudantes universitários. Ela permite que estudantes de odontologia solicitem assistência para procedimentos, e que outros estudantes se voluntariem para ajudar, facilitando a colaboração e o aprendizado prático no ambiente acadêmico.
 
-Currently, two official plugins are available:
+## Tecnologias
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+-   **Frontend:** React (com Vite), Tailwind CSS
+-   **Backend:** Node.js, Express
+-   **Banco de Dados:** PostgreSQL
+-   **Autenticação:** JSON Web Tokens (JWT)
 
-## React Compiler
+## Pré-requisitos
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+Antes de começar, certifique-se de ter os seguintes softwares instalados:
 
-Note: This will impact Vite dev & build performances.
+-   [Node.js](https://nodejs.org/) (versão 18.x ou superior)
+-   [npm](https://www.npmjs.com/) (geralmente vem com o Node.js)
+-   [PostgreSQL](https://www.postgresql.org/)
 
-## Expanding the ESLint configuration
+## Como Iniciar o Projeto
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Siga os passos abaixo para configurar e executar o projeto localmente.
+
+### 1. Clonar o Repositório
+
+```bash
+git clone <URL_DO_SEU_REPOSITORIO>
+cd Projeto-UniLink
+```
+
+### 2. Configurar o Banco de Dados
+
+1.  Inicie o serviço do PostgreSQL.
+2.  Crie um novo banco de dados. Por exemplo, `unilink_db`.
+3.  Execute os scripts SQL localizados na pasta `server/migrations` para criar as tabelas e popular os dados iniciais. Você pode precisar executar os arquivos em ordem numérica. O arquivo `database.sql` pode conter a estrutura inicial, mas os arquivos de migração são mais recentes.
+
+### 3. Configurar o Backend
+
+1.  Navegue até a pasta do servidor:
+    ```bash
+    cd server
+    ```
+
+2.  Instale as dependências:
+    ```bash
+    npm install
+    ```
+
+3.  Crie um arquivo de ambiente `.env` na pasta `server` e adicione as seguintes variáveis:
+    ```env
+    # Configurações do Banco de Dados
+    DB_USER=seu_usuario_postgres
+    DB_HOST=localhost
+    DB_DATABASE=unilink_db
+    DB_PASSWORD=sua_senha_postgres
+    DB_PORT=5432
+
+    # Segredo para o JWT
+    JWT_SECRET=seu_segredo_super_secreto
+
+    # Porta do Servidor
+    PORT=8080
+    ```
+
+4.  Inicie o servidor backend:
+    ```bash
+    npm start
+    ```
+    O servidor estará rodando em `http://localhost:8080`.
+
+### 4. Configurar o Frontend
+
+1.  Volte para a pasta raiz do projeto (se você estiver na pasta `server`):
+    ```bash
+    cd ..
+    ```
+
+2.  Instale as dependências:
+    ```bash
+    npm install
+    ```
+
+3.  Crie um arquivo de ambiente `.env` na pasta raiz do projeto e adicione a seguinte variável:
+    ```env
+    VITE_API_URL=http://localhost:8080
+    ```
+
+4.  Inicie o servidor de desenvolvimento do frontend:
+    ```bash
+    npm run dev
+    ```
+    A aplicação estará disponível em `http://localhost:5173` (ou outra porta indicada pelo Vite).
+
+## Estrutura do Projeto
+
+```
+.
+├── /server/      # Código do backend (Node.js, Express)
+│   ├── routes/
+│   ├── migrations/
+│   ├── package.json
+│   └── index.js
+├── /src/         # Código do frontend (React)
+│   ├── components/
+│   ├── pages/
+│   ├── api/
+│   └── main.jsx
+├── README.md
+└── package.json
+```
