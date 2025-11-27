@@ -1,12 +1,16 @@
 const formatarData = (dataString) => {
   if (!dataString) return '';
   const data = new Date(dataString);
-  return new Intl.DateTimeFormat('pt-BR', {
-    weekday: 'long',
+  // Opções para o formato: "24 de nov de 2025"
+  const options = {
     day: 'numeric',
-    month: 'long',
+    month: 'short',
     year: 'numeric'
-  }).format(data);
+  };
+  // O formato pt-BR pode incluir um ponto na abreviação do mês (ex: "nov."), então o removemos.
+  return new Intl.DateTimeFormat('pt-BR', options)
+    .format(data)
+    .replace('.', '');
 };
 
 const formatarHorario = (horarioString) => {

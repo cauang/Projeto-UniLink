@@ -177,7 +177,7 @@ const PersonCard = ({ person, role = 'Voluntário' }) => {
 };
 
 // Card de Ações (com estilização dos botões de cancelamento atualizada)
-const AcoesCard = ({ procedimento, onAddCalendar, onSendMessage, onCancel, onInscrever, onCancelSolicitacao, isStudent = false, currentUser = {} }) => {
+const AcoesCard = ({ procedimento, onAddCalendar, onCancel, onInscrever, onCancelSolicitacao, isStudent = false, currentUser = {} }) => {
   const status = (procedimento?.status || '').toLowerCase();
   const userId = currentUser?.id_usuario || currentUser?.id || currentUser?.usuario_id || currentUser?.idUser;
   const ownerId = procedimento?.estudante_id || procedimento?.estudante || procedimento?.estudante_usuario_id || procedimento?.usuario_id || procedimento?.id_usuario;
@@ -191,13 +191,6 @@ const AcoesCard = ({ procedimento, onAddCalendar, onSendMessage, onCancel, onIns
           <CalendarPlus className="h-5 w-5" />
           Adicionar ao Calendário
         </button>
-
-        {!isStudent && (
-          <button onClick={onSendMessage} className="w-full bg-white text-gray-700 font-semibold py-3 px-4 rounded-lg border border-gray-300 hover:bg-gray-50 flex items-center justify-center gap-2">
-            <Mail className="h-5 w-5" />
-            Enviar Mensagem
-          </button>
-        )}
 
         {isStudent ? (
           isOwner ? (
@@ -367,17 +360,6 @@ export default function DetalhesProcedimento() {
     }
   };
 
-  const handleEnviarMensagem = () => {
-    const to = procedimento.voluntario_email || procedimento.estudante_email || procedimento.email || '';
-    const subject = encodeURIComponent(`Sobre o procedimento: ${procedimento.titulo || ''}`);
-    const body = encodeURIComponent(`Olá,\n\nReferente ao procedimento "${procedimento.titulo || ''}" marcado para ${formatarData(procedimento.data)} às ${procedimento.horario || ''}.\n\n`);
-    if (!to) {
-      toast('Email do contato não disponível.');
-      return;
-    }
-    window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
-  };
-
 
   if (loading) return <div className="min-h-screen flex items-center justify-center">
     <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
@@ -487,7 +469,6 @@ export default function DetalhesProcedimento() {
             <AcoesCard
               procedimento={procedimento}
               onAddCalendar={handleAdicionarCalendario}
-              onSendMessage={handleEnviarMensagem}
               // PASSANDO A FUNÇÃO QUE ABRE O MODAL
               onCancel={() => openCancelModal('inscricao')}
               onInscrever={handleInscrever}

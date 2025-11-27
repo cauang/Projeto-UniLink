@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import api from "../api/http.js";
 import { toast } from 'react-hot-toast';
+import { formatarData } from "../utils/formatters.js";
 import CalendarWidget from '../components/CalendarWidget';
 import ModalConfirmarInscricao from './ConfirmacaoInscricao';
 import ConfirmacaoCancelamento from './ConfirmacaoCancelamento.jsx';
@@ -170,7 +171,7 @@ export default function DashboardVoluntario() {
           telefone: row.estudante_telefone || (row.estudante && row.estudante.telefone) || null,
           semestre: row.estudante_semestre || (row.estudante && row.estudante.semestre) || null,
         };
-        const data = row.data ? (typeof row.data === 'string' ? row.data : new Date(row.data).toLocaleDateString()) : (row.date || null);
+        const data = row.data ? formatarData(row.data) : (row.date ? formatarData(row.date) : null);
         const horario = row.horario || row.time || null;
         const duracao = row.duracao || row.duration || null;
         const local = row.local || row.localizacao || row.location || null;
