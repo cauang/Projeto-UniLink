@@ -12,7 +12,7 @@ UniLink é uma plataforma projetada para conectar estudantes universitários. El
 
 Antes de começar, certifique-se de ter os seguintes softwares instalados:
 
--   [Node.js](https://nodejs.org/) (versão 18.x ou superior)
+-   [Node.js](https://nodejs.org/) (versão 20.19+ ou superior)
 -   [npm](https://www.npmjs.com/) (geralmente vem com o Node.js)
 -   [PostgreSQL](https://www.postgresql.org/)
 
