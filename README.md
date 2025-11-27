@@ -1,5 +1,4 @@
 # UniLink
-
 UniLink é uma plataforma projetada para conectar estudantes universitários. Ela permite que estudantes de odontologia solicitem assistência para procedimentos, e que outros estudantes se voluntariem para ajudar, facilitando a colaboração e o aprendizado prático no ambiente acadêmico.
 
 ## Tecnologias
