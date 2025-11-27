@@ -26,6 +26,7 @@ import {
   University,
   Bell,
   ArrowRight,
+  ArrowLeft,
 } from "lucide-react";
 
 // --- Constantes de Cor ---
@@ -222,7 +223,14 @@ const Sobre = () => {
   ];
 
   return (
-    <div className="min-h-screen font-sans bg-gray-50">
+    <div className="min-h-screen font-sans bg-gray-50 relative">
+      <Link
+        to="/"
+        className="absolute top-6 left-6 z-50 inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 text-sm font-semibold text-gray-700 shadow-md backdrop-blur-sm transition hover:bg-white hover:text-gray-900"
+      >
+        <ArrowLeft size={16} />
+        <span>Voltar</span>
+      </Link>
       {/* Header */}
       <header
         className="py-20 md:py-28 text-white text-center rounded-b-3xl shadow-lg"
@@ -233,12 +241,14 @@ const Sobre = () => {
             Bem-vindo ao Unilink
           </h1>
           <p className="text-lg md:text-xl font-light opacity-90 mb-8">
-            A plataforma oficial da Unifor que conecta alunos de odontologia a
-            voluntários para procedimentos acadêmicos.
+            A plataforma que conecta alunos de Odontologia da Unifor com <br/> com voluntários da comunidade acadêmica.
+          </p>
+          <p className="text-base md:text-lg font-light opacity-90 mb-8">
+            Tratamentos odontológicos gratuitos para voluntários. Experiência prática essencial <br /> para estudantes. Colaboração que transforma vidas.
           </p>
           <a
             href="#como-funciona"
-            onClick={handleScroll} // <-- ADICIONADO O onClick
+            onClick={handleScroll}
             className="inline-flex items-center justify-center px-8 py-3 rounded-full shadow-lg text-slate-900 font-semibold bg-white hover:bg-slate-100 transition"
           >
             Saiba Mais
@@ -457,7 +467,6 @@ const Sobre = () => {
           <div className="text-2xl md:text-3xl font-bold mb-4 md:mb-0">
             <div className="flex items-center justify-center">
               4.9
-              <Star size={24} className="ml-1 text-yellow-300" />
             </div>
             <p className="text-sm font-light opacity-80">Avaliação Média</p>
           </div>

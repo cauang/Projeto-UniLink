@@ -176,7 +176,7 @@ export default function Cadastro() {
           </svg>
 
           {/* Container para a imagem */}
-          <div className="absolute z-10 w-[360px] h-[480px] border-8 border-white rounded-full overflow-hidden shadow-2xl flex items-center justify-center">
+          <div className="absolute z-10 w-[360px] h-[480px] rounded-full overflow-hidden shadow-2xl flex items-center justify-center">
             <img
               src="/Up.png"
               alt="Entrada da Unifor"
@@ -213,7 +213,7 @@ export default function Cadastro() {
                 {/* Nome Completo */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700">
-                    Nome Completo*
+                    Nome Completo
                   </label>
                   <input
                     name="nome"
@@ -228,7 +228,7 @@ export default function Cadastro() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-slate-700">
-                      Curso*
+                      Curso
                     </label>
                     <select
                       name="curso"
@@ -244,7 +244,7 @@ export default function Cadastro() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700">
-                      Semestre*
+                      Semestre
                     </label>
                     <select
                       name="semestre"
@@ -264,7 +264,7 @@ export default function Cadastro() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-slate-700">
-                      Matrícula*
+                      Matrícula
                     </label>
                     <div>
                       <input
@@ -304,7 +304,7 @@ export default function Cadastro() {
                 {/* E-mail Institucional */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700">
-                    E-mail Institucional*
+                    E-mail Institucional
                   </label>
                   <input
                     name="email"
@@ -320,7 +320,7 @@ export default function Cadastro() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-slate-700">
-                      Senha*
+                      Senha
                     </label>
                     <input
                       name="senha"
@@ -333,7 +333,7 @@ export default function Cadastro() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-slate-700">
-                      Confirmar Senha*
+                      Confirmar Senha
                     </label>
                     <input
                       name="confirmarSenha"
@@ -367,6 +367,9 @@ export default function Cadastro() {
                   Fazer login
                 </Link>
               </div>
+              <p className="text-base text-[#002147] mt-10 text-center text-slate-800">
+                Desenvolvido pelo Grupo Unilink - Unifor 2025
+              </p>
             </form>
           </div>
         </div>

@@ -91,7 +91,7 @@ export default function LoginSplit() {
           </svg>
 
           {/* Container para a imagem */}
-          <div className="absolute z-10 w-[360px] h-[480px] border-8 border-white rounded-full overflow-hidden shadow-2xl flex items-center justify-center">
+          <div className="absolute z-10 w-[360px] h-[480px] rounded-full overflow-hidden shadow-2xl flex items-center justify-center">
             <img
               src="/public/Up.png"
               alt="Entrada da Unifor"
@@ -120,7 +120,7 @@ export default function LoginSplit() {
               Acesso ao Unilink
             </h1>
             <p className="mt-2 text-center text-sm text-slate-600">
-              Unilink: Onde alunos encontram oportunidades de aprendizado
+              Unilink: Onde alunos encontram oportunidades de <br /> aprendizado
               colaborativo
             </p>
 
@@ -204,6 +204,10 @@ export default function LoginSplit() {
                 <a className="text-[#1E40FF] hover:underline" href="/cadastro">
                   Cadastre-se agora
                 </a>
+              </p>
+
+              <p className="text-base text-[#002147] mt-10 text-center text-slate-800">
+                Desenvolvido pelo Grupo Unilink - Unifor 2025
               </p>
             </form>
           </div>

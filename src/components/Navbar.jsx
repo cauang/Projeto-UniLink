@@ -13,14 +13,10 @@ export default function Navbar() {
             className="w-full max-w-[520px] rounded-md mx-auto"
           />
         </Link>
-        <nav className="hidden md:flex items-center gap-2 text-sm flex-grow justify-end">
-          <div className="flex items-center justify-between w-full max-w-lg">
-            <div className="flex items-center gap-2">
-              <NavLink to="/" className={item}>Home</NavLink>
-              <NavLink to="/sobre" className={item}>Sobre</NavLink>
-            </div>
-            <Link to="/login" className="btn-white w-[124px] h-[50px]">ENTRAR</Link>
-          </div>
+        <nav className="hidden md:flex items-center gap-4 text-sm">
+          <NavLink to="/" className={item}>Home</NavLink>
+          <NavLink to="/sobre" className={item}>Sobre</NavLink>
+          <Link to="/login" className="btn-white w-[124px] h-[50px]">ENTRAR</Link>
         </nav>
         <Link to="/login" className="md:hidden btn-white">ENTRAR</Link>
       </div>
