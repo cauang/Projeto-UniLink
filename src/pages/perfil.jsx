@@ -148,14 +148,14 @@ const StatsCard = ({ stats }) => (
   </div>
 );
 
-// --- Componente Abas (ESTILO ATUALIZADO E CORRIGIDO) ---
+// --- Componente Abas ---
 const ProfileTabs = ({ activeTab, setActiveTab }) => {
   const tabs = ["Informações", "Notificações", "Segurança"];
   return (
-    // Container cinza e arredondado (rounded-full)
+    // Container cinza e arredondado 
     <nav
-      className="w-full p-1.5 rounded-full flex items-center justify-around" // <-- 'rounded-full' e 'justify-around'
-      style={{ backgroundColor: "#ECECF0" }} // <-- COR EXATA APLICADA
+      className="w-full p-1.5 rounded-full flex items-center justify-around" 
+      style={{ backgroundColor: "#ECECF0" }} 
     >
       {tabs.map((tab) => (
         <button
@@ -166,8 +166,8 @@ const ProfileTabs = ({ activeTab, setActiveTab }) => {
           }}
           className={`text-center px-6 py-2 text-sm font-medium transition rounded-full ${ // <-- 'rounded-full'
             activeTab === tab
-              ? "bg-white shadow-sm text-gray-900" // Estilo Ativo: Botão branco
-              : "text-gray-600 hover:text-gray-700" // Estilo Inativo: Transparente
+              ? "bg-white shadow-sm text-gray-900" 
+              : "text-gray-600 hover:text-gray-700" 
           }`}
         >
           {tab}
@@ -298,7 +298,6 @@ const ToggleSwitch = ({ enabled, setEnabled }) => (
 
 // --- Componente de Conteúdo (para a aba "Notificações") ---
 const NotificationContent = () => {
-  // Estados para controlar cada toggle
   const [emailNotif, setEmailNotif] = useState(true);
   const [pushNotif, setPushNotif] = useState(true);
   const [lembretes, setLembretes] = useState(true);
