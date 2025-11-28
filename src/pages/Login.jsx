@@ -99,7 +99,7 @@ export default function LoginSplit() {
               onError={(e) => {
                 e.target.onerror = null;
                 e.target.src =
-                  "./public/Up.png";
+                  "../public/Up.png";
               }}
             />
           </div>
