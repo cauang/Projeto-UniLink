@@ -99,7 +99,7 @@ export default function LoginSplit() {
               onError={(e) => {
                 e.target.onerror = null;
                 e.target.src =
-                  "https://placehold.co/360x480/1E40FF/FFFFFF?text=Imagem+Unifor";
+                  "./public/Up.png";
               }}
             />
           </div>
@@ -149,7 +149,7 @@ export default function LoginSplit() {
               <div className="relative w-full mt-2">
                 <input
                   id="senha"
-                  type={showPassword ? "text" : "password"} // <-- Dinâmico
+                  type={showPassword ? "text" : "password"} 
                   value={senha}
                   onChange={(e) => setSenha(e.target.value)}
                   className="w-full rounded-xl bg-[rgba(176,186,195,0.40)] px-4 py-3 pr-10 text-slate-900 placeholder:text-slate-500 focus:bg-[rgba(176,186,195,0.50)] outline-none"
